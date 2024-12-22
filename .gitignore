@@ -1,0 +1,128 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+.env
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+/build/
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release
+
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build
+# Flutter-specific files
+.flutter-plugins
+.flutter-plugins-dependencies
+.flutter-versions
+.packages
+.pub-cache/
+.pub/
+.buildlog/
+.dart_tool/
+.shard_tool/
+.macos/
+
+# iOS-specific files
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/.symlinks/
+ios/Pods/
+ios/Podfile.lock
+ios/Podfile.swp
+ios/Runner.xcworkspace/
+ios/Runner.xcodeproj/project.xcworkspace/
+ios/Flutter/App.framework
+ios/Flutter/engine/
+ios/Flutter/*.xcodeproj/
+
+# Android-specific files
+android/.gradle/
+android/app/build/
+android/local.properties
+android/key.properties
+android/build/
+**/build/
+
+# Dart Editor specific
+.dart_tool/
+.buildlog
+.pub/
+.packages
+
+# VSCode settings
+.vscode/
+.idea/
+
+# IDE settings
+*.iml
+*.ipr
+*.iws
+.idea/
+*.android/
+*.ios/
+.gradle/
+.cache/
+
+# Log files
+*.log
+
+# Dependency folders
+.packages
+.dart_tool/
+.pub/
+
+# Build files
+build/
+
+# Web specific
+web/manifest.json
+
+# Coverage
+coverage/
+
+# MacOS specific
+*.DS_Store
+
+# Linux specific
+**/.snap/

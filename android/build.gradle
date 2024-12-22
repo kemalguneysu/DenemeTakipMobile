@@ -1,0 +1,32 @@
+// buildscript bloğunu en üste alarak sıralama hatasını düzeltebilirsiniz
+
+// 1. buildscript bloğu en başta
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        // Burada gerekli bağımlılıkları ekleyebilirsiniz
+    }
+}
+
+// 2. plugins bloğu aşağıda yer almalı
+plugins {
+    id "org.jetbrains.kotlin.android" version "1.9.0" apply false
+}
+
+// 3. Proje genelinde yapılandırmalar
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+// 4. Proje yapılandırması
+rootProject.buildDir = "../build"
+
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
