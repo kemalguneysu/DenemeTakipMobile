@@ -1,38 +1,42 @@
-
 import 'package:go_router/go_router.dart';
+import 'package:mobil_denemetakip/main.dart';
+import 'package:mobil_denemetakip/services/theme-service.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class NavigationHeader extends StatefulWidget  {
-  const NavigationHeader({Key? key}) : super(key: key);
-   @override
+class NavigationHeader extends StatefulWidget {
+  final ThemeService themeService;
+
+  const NavigationHeader({Key? key, required this.themeService})
+      : super(key: key);
+
+  @override
   _NavigationHeaderState createState() => _NavigationHeaderState();
 }
+
 class _NavigationHeaderState extends State<NavigationHeader> {
-  bool isLightTheme=true;
+  bool isLightTheme = true;
+
   @override
   void initState() {
     super.initState();
-    _loadThemePreference(); // Başlangıçta temayı yükle
+    _loadTheme();
   }
-  Future<void> _loadThemePreference() async {
-    final prefs = await SharedPreferences.getInstance();
-    final theme = prefs.getString('theme') ?? 'light';
+
+  void _loadTheme() async {
+    String? theme = await widget.themeService.getTheme();
     setState(() {
       isLightTheme = theme == 'light';
     });
   }
-  Future<void> _updateThemePreference() async {
-    final prefs = await SharedPreferences.getInstance();
-    final newTheme = isLightTheme ? 'dark' : 'light'; 
-    await prefs.setString('theme', newTheme);
-  }
+
   void _toggleTheme() {
     setState(() {
-      isLightTheme = !isLightTheme; // Durumu değiştir
+      isLightTheme = !isLightTheme;
     });
-    _updateThemePreference(); // Yeni durumu kaydet
+    widget.themeService.setTheme(isLightTheme ? 'light' : 'dark');
+    isLightTheme?colorSchemePreferenceGlobal=ColorSchemes.lightZinc():colorSchemePreferenceGlobal=ColorSchemes.darkZinc();
   }
+
   void open(BuildContext context) {
     openDrawer(
       context: context,
@@ -41,8 +45,7 @@ class _NavigationHeaderState extends State<NavigationHeader> {
         return Container(
           color: Theme.of(context).colorScheme.background,
           alignment: Alignment.center,
-          padding:
-              const EdgeInsets.symmetric(horizontal: 4), 
+          padding: const EdgeInsets.symmetric(horizontal: 4),
           child: Column(
             children: [
               // Üst kısım
@@ -61,14 +64,14 @@ class _NavigationHeaderState extends State<NavigationHeader> {
                   children: [
                     Button.link(
                       onPressed: () {
-                       context.go('/denemelerim');
+                        context.go('/denemelerim');
                       },
                       child: const Text(
                         'Denemelerim',
                         style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold,
-                            ),
-                            
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                     Button.link(
@@ -78,7 +81,9 @@ class _NavigationHeaderState extends State<NavigationHeader> {
                       child: const Text(
                         'Analizler',
                         style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                     Button.link(
@@ -88,7 +93,9 @@ class _NavigationHeaderState extends State<NavigationHeader> {
                       child: const Text(
                         'Konu Takip',
                         style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                     Button.link(
@@ -98,7 +105,9 @@ class _NavigationHeaderState extends State<NavigationHeader> {
                       child: const Text(
                         'Yapılacaklar',
                         style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                     Button.link(
@@ -108,7 +117,9 @@ class _NavigationHeaderState extends State<NavigationHeader> {
                       child: const Text(
                         'Notlarım',
                         style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                     Button.link(
@@ -118,7 +129,9 @@ class _NavigationHeaderState extends State<NavigationHeader> {
                       child: const Text(
                         'Pomodoro',
                         style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],
@@ -131,33 +144,39 @@ class _NavigationHeaderState extends State<NavigationHeader> {
             ],
           ),
         );
-
       },
       position: OverlayPosition.left,
     );
   }
 
-  
-  
+  @override
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Theme.of(context).colorScheme.background,
       padding: EdgeInsets.zero,
-      child:NavigationMenu(
+      child: NavigationMenu(
         children: [
           NavigationItem(
-          onPressed: () {},
-          child: const Text('Deneme Takip',style: TextStyle(fontSize: 22,fontWeight: FontWeight.w600,),),
+            onPressed: () {
+              context.go('/');
+            },
+            child: const Text(
+              'Deneme Takip',
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
           ),
-        ]
+        ],
       ),
       trailing: [
         GhostButton(
           density: ButtonDensity.icon,
-          onPressed: (){
-             _toggleTheme();
+          onPressed: () {
+            _toggleTheme();
           },
-          child: isLightTheme? Icon(Icons.sunny) :Icon(Icons.bedtime),
+          child: isLightTheme ? Icon(Icons.bedtime) : Icon(Icons.sunny),
           size: ButtonSize(1.2),
         ),
         GhostButton(
@@ -166,12 +185,9 @@ class _NavigationHeaderState extends State<NavigationHeader> {
             open(context);
           },
           child: const Icon(Icons.menu),
-          size:ButtonSize(1.2),
-          
+          size: ButtonSize(1.2),
         ),
       ],
-
     );
-    
   }
 }

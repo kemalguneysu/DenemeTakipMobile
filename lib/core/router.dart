@@ -14,10 +14,12 @@ import 'package:mobil_denemetakip/screens/sifremiUnuttum-screen.dart';
 import 'package:mobil_denemetakip/screens/sifreyiYenile-screen.dart';
 import 'package:mobil_denemetakip/screens/tyt-screen.dart';
 import 'package:mobil_denemetakip/screens/yapilacaklar-screen.dart';
+import 'package:mobil_denemetakip/services/theme-service.dart';
 
 import '../constants/layout.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
+final ThemeService themeService = ThemeService();
 
 final GoRouter router = GoRouter(
   navigatorKey: _rootNavigatorKey,
@@ -26,67 +28,67 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/',
       builder: (context, state) {
-        return const Layout(child: HomeScreen());
+        return Layout(child: HomeScreen(), themeService: themeService);
       },
     ),
     GoRoute(
       path: '/denemelerim',
       builder: (context, state) {
-        return const Layout(child: DenemelerimScreen());
+        return  Layout(child: DenemelerimScreen(), themeService: themeService);
       },
     ),
     GoRoute(
       path: '/analizlerim',
       builder: (context, state) {
-        return const Layout(child: AnalizlerimScreen());
+        return  Layout(child: AnalizlerimScreen(), themeService: themeService);
       },
     ),
     GoRoute(
       path: '/konu-takip',
       builder: (context, state) {
-        return const Layout(child: KonuTakipScreen());
+        return  Layout(child: KonuTakipScreen(), themeService: themeService);
       },
     ),
     GoRoute(
       path: '/yapilacaklar',
       builder: (context, state) {
-        return const Layout(child: YapilacaklarScreen());
+        return  Layout(child: YapilacaklarScreen(), themeService: themeService);
       },
     ),
     GoRoute(
       path: '/notlarim',
       builder: (context, state) {
-        return const Layout(child: NotlarimScreen());
+        return  Layout(child: NotlarimScreen(), themeService: themeService);
       },
     ),
     GoRoute(
       path: '/pomodoro',
       builder: (context, state) {
-        return const Layout(child: PomodoroScreen());
+        return  Layout(child: PomodoroScreen(), themeService: themeService);
       },
     ),
     GoRoute(
       path: '/giris-yap',
       builder: (context, state) {
-        return const Layout(child: GirisYapScreen());
+        return  Layout(child: GirisYapScreen(), themeService: themeService);
       },
     ),
     GoRoute(
       path: '/hesabim',
       builder: (context, state) {
-        return const Layout(child: HesabimScreen());
+        return  Layout(child: HesabimScreen(), themeService: themeService);
       },
     ),
     GoRoute(
       path: '/kayit-ol',
       builder: (context, state) {
-        return const Layout(child: KayitOlScreen());
+        return  Layout(child: KayitOlScreen(), themeService: themeService);
       },
     ),
     GoRoute(
       path: '/sifremi-unuttum',
       builder: (context, state) {
-        return const Layout(child: SifremiUnuttumScreen());
+        return  Layout(child: SifremiUnuttumScreen(), themeService: themeService);
       },
     ),
     GoRoute(
@@ -95,7 +97,7 @@ final GoRouter router = GoRouter(
         final userId = state.pathParameters['userId']!;
         final resetToken = state.pathParameters['resetToken']!;
         return Layout(
-          child: SifreyiYenileScreen(userId: userId, resetToken: resetToken),
+          child: SifreyiYenileScreen(userId: userId, resetToken: resetToken), themeService: themeService
         );
       },
     ),
@@ -103,14 +105,14 @@ final GoRouter router = GoRouter(
       path: '/denemelerim/tyt/:tytId',
       builder: (context, state) {
         final tytId = state.pathParameters['tytId']!;
-        return Layout(child: TytScreen(tytId: tytId));
+        return Layout(child: TytScreen(tytId: tytId), themeService: themeService);
       },
     ),
     GoRoute(
       path: '/denemelerim/ayt/:aytId',
       builder: (context, state) {
         final aytId = state.pathParameters['aytId']!;
-        return Layout(child: AytScreen(aytId: aytId));
+        return Layout(child: AytScreen(aytId: aytId), themeService: themeService);
       },
     ),
   ],

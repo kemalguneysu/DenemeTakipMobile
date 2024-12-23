@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:mobil_denemetakip/constants/toast.dart';
+import 'package:mobil_denemetakip/main.dart';
 import 'package:mobil_denemetakip/services/auth-service.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
@@ -72,10 +73,7 @@ class _FooterState extends State<Footer> {
                             if (selected) {
                               await authService.signOut(); 
                               context.go("/giris-yap"); 
-                              
-                              // Toast için dc bak 
-                              showToast(context: context, builder: buildToast,location: ToastLocation.topCenter);
-                                
+                              successToast("Oturum kapatıldı", "Başarıyla çıkış yapıldı.", context);
                             }
                           },
                         )

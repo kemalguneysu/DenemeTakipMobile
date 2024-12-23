@@ -72,6 +72,23 @@ class User {
   late String password;
   late String passwordConfirm;
   late bool getEmailConfirmation;
+  User({
+    required this.username,
+    required this.email,
+    required this.password,
+    this.passwordConfirm = '',
+    this.getEmailConfirmation = false,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'username': username,
+      'email': email,
+      'password': password,
+      'passwordConfirm': passwordConfirm,
+      'getEmailConfirmation': getEmailConfirmation,
+    };
+  }
 }
 
 class UpdateUser {
