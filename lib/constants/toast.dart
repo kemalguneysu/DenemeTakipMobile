@@ -46,14 +46,14 @@ void errorToast(String title,String subtitle,BuildContext context) {
                 style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.card),
+                    color: Colors.white),
               ),
             ),
             subtitle: Container(
               padding: EdgeInsets.only(top: 10),
               child: Text(
                 '$subtitle',
-                style: TextStyle(fontSize: 14,color: Theme.of(context).colorScheme.card),
+                style: TextStyle(fontSize: 14,color: Colors.white),
               ),
             ),
           ),

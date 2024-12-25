@@ -34,7 +34,7 @@ class _KayitOlScreenState extends State<KayitOlScreen> {
       passwordConfirm: _passwordControlController.text,
       getEmailConfirmation: _emailConfirmation==CheckboxState.checked,
     );
-    userService.createUser(user.toJson(), callBackFunction: () {
+    userService.createUser(user.toJson(),Navigator.of(context).context, callBackFunction: () {
       successToast("Kayıt Başarılı", "Kullanıcı Başarıyla Oluşturuldu",context);
         context.go("/giris-yap");
     });
@@ -132,7 +132,7 @@ class _KayitOlScreenState extends State<KayitOlScreen> {
               Expanded(
                 child: RichText(
                   text: TextSpan(
-                    style: TextStyle(color: Colors.black, fontSize: 14),
+                    style: TextStyle(color: Theme.of(context).colorScheme.foreground, fontSize: 14),
                     children: [
                       const TextSpan(text: "Gizlilik Politikası'nı "),
                       TextSpan(
@@ -185,7 +185,7 @@ class _KayitOlScreenState extends State<KayitOlScreen> {
               Expanded(
                 child: Text(
                   'Yeni özellikler, kampanyalar ve özel içerikler hakkında bilgilendirilmek için e-posta almak istiyorum.',
-                  style: TextStyle(color: Colors.black, fontSize: 14),
+                  style: TextStyle(color: Theme.of(context).colorScheme.foreground, fontSize: 14),
                 ),
               ),
             ],

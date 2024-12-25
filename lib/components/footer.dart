@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:mobil_denemetakip/constants/toast.dart';
 import 'package:mobil_denemetakip/main.dart';
 import 'package:mobil_denemetakip/services/auth-service.dart';
@@ -57,7 +58,7 @@ class _FooterState extends State<Footer> {
                 labelType: NavigationLabelType.none,
                 expands: false,
                 children: [
-                  buildButton('Ana Sayfa', BootstrapIcons.house, "/"),
+                  buildButton('Ana Sayfa', LucideIcons.home, "/"),
 
                   // Eğer kullanıcı giriş yapmışsa, 'Giriş Yap' butonunu çıkış butonuna çevir
                   userStatus['isAuthenticated']
@@ -68,7 +69,7 @@ class _FooterState extends State<Footer> {
                               density: ButtonDensity.icon),
                           label: const Text('Çıkış Yap',
                               style: TextStyle(fontSize: 16)),
-                          child: const Icon(Icons.exit_to_app, size: 24),
+                          child: const Icon(LucideIcons.logOut, size: 24),
                           onChanged: (bool selected) async {
                             if (selected) {
                               await authService.signOut(); 
@@ -78,7 +79,7 @@ class _FooterState extends State<Footer> {
                           },
                         )
                       : buildButton(
-                          'Giriş Yap', BootstrapIcons.person, "/giris-yap"),
+                          'Giriş Yap', LucideIcons.user, "/giris-yap"),
                 ],
               ),
             ],

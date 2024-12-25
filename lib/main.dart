@@ -5,7 +5,7 @@ import 'package:mobil_denemetakip/services/theme-service.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart' as sh;
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-sh.ColorScheme colorSchemePreferenceGlobal = sh.ColorSchemes.lightZinc();
+sh.ColorScheme colorSchemePreferenceGlobal = sh.ColorSchemes.darkZinc();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

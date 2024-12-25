@@ -1,4 +1,9 @@
+import 'package:mobil_denemetakip/components/denemelerim/ayt-create.dart';
+import 'package:mobil_denemetakip/components/denemelerim/tyt-create.dart';
+import 'package:mobil_denemetakip/services/dersler-service.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
+
+import '../constants/index.dart';
 
 class DenemelerimScreen extends StatefulWidget {
   const DenemelerimScreen({Key? key}) : super(key: key);
@@ -8,13 +13,12 @@ class DenemelerimScreen extends StatefulWidget {
 }
 
 class _DenemelerimScreenState extends State<DenemelerimScreen> {
-  bool isTyt = true;
+  bool isAyt = false;
   DateTime? _date;
-
+ 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      // Column'ı kaydırılabilir yapmak için
       child: Container(
         child: Column(
           children: [
@@ -22,12 +26,20 @@ class _DenemelerimScreenState extends State<DenemelerimScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Switch(
-                  value: isTyt,
+                  leading: const Text("TYT",style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500
+                  ),),
+                  value: isAyt,
                   onChanged: (value) {
                     setState(() {
-                      this.isTyt = value;
+                      this.isAyt = value;
                     });
                   },
+                  trailing: const Text(
+                    "AYT",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                  ),
                 ),
               ],
             ),
@@ -52,6 +64,9 @@ class _DenemelerimScreenState extends State<DenemelerimScreen> {
                 ],
               ),
             ),
+            Container(
+              child: isAyt?AytCreate(isAyt: isAyt):TytCreate(isAyt: isAyt),
+            )
           ],
         ),
       ),

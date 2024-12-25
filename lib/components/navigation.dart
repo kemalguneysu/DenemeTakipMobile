@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:mobil_denemetakip/main.dart';
 import 'package:mobil_denemetakip/services/theme-service.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
@@ -176,7 +177,7 @@ class _NavigationHeaderState extends State<NavigationHeader> {
           onPressed: () {
             _toggleTheme();
           },
-          child: isLightTheme ? Icon(Icons.bedtime) : Icon(Icons.sunny),
+          child: isLightTheme ? Icon(LucideIcons.moon) : Icon(LucideIcons.sun),
           size: ButtonSize(1.2),
         ),
         GhostButton(
@@ -184,7 +185,7 @@ class _NavigationHeaderState extends State<NavigationHeader> {
           onPressed: () {
             open(context);
           },
-          child: const Icon(Icons.menu),
+          child: const Icon(LucideIcons.menu),
           size: ButtonSize(1.2),
         ),
       ],
