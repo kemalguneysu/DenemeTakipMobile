@@ -37,4 +37,28 @@ class DenemeService {
       throw error.toString();
     }
   }
+  Future<void> createAyt(CreateAyt aytDeneme) async {
+    try {
+      final response = await fetchWithAuth.fetchWithAuth(
+        '$apiBaseUrl/Ayts/CreateAyt',
+        method: 'POST',
+        body: aytDeneme.toJson(),
+      );
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      } else {
+        final errorBody = jsonDecode(response.body);
+        final errorMessages = errorBody is List
+            ? errorBody
+                .map((e) =>
+                    e['value'] is List ? e['value'].join('\n') : e['value'])
+                .join('\n')
+            : 'AYT denemesi eklenirken bir hata oluştu: ${response.reasonPhrase}';
+        throw errorMessages;
+      }
+    } catch (error) {
+      throw error.toString();
+    }
+  }
 }

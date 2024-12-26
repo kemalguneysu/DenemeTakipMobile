@@ -38,13 +38,44 @@ class DerslerService {
         },
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 && isTyt==true) {
         final data = jsonDecode(response.body);
          List<Ders> dersler = (data['dersler'] as List)
             .map((i) => Ders.fromJson(i))
             .toList()
           ..sort((a, b) {
             const order = ['Türkçe', 'Matematik', 'Fen', 'Sosyal'];
+            return order.indexOf(a.dersAdi).compareTo(order.indexOf(b.dersAdi));
+          });
+        // Başarılıysa geri çağırma fonksiyonunu çağır
+        if (successCallBack != null) {
+          successCallBack();
+        }
+        return {
+          'totalCount': data['totalCount'],
+          'dersler': dersler,
+        };
+      }
+      else  if (response.statusCode == 200 && isTyt == false) {
+        final data = jsonDecode(response.body);
+        List<Ders> dersler = (data['dersler'] as List)
+            .map((i) => Ders.fromJson(i))
+            .toList()
+          ..sort((a, b) {
+            const order = [
+              "Matematik",
+              "Fizik",
+              "Kimya",
+              "Biyoloji",
+              "Edebiyat",
+              "Tarih1",
+              "Coğrafya1",
+              "Tarih2",
+              "Coğrafya2",
+              "Felsefe",
+              "Din",
+              "Dil",
+            ];
             return order.indexOf(a.dersAdi).compareTo(order.indexOf(b.dersAdi));
           });
         // Başarılıysa geri çağırma fonksiyonunu çağır

@@ -333,6 +333,37 @@ class CreateAyt {
       denemeDate: DateTime.parse(json['denemeDate']),
     );
   }
+  Map<String, dynamic> toJson() {
+    return {
+      'matematikDogru': matematikDogru,
+      'matematikYanlis': matematikYanlis,
+      'fizikDogru': fizikDogru,
+      'fizikYanlis': fizikYanlis,
+      'kimyaDogru': kimyaDogru,
+      'kimyaYanlis': kimyaYanlis,
+      'biyolojiDogru': biyolojiDogru,
+      'biyolojiYanlis': biyolojiYanlis,
+      'edebiyatDogru': edebiyatDogru,
+      'edebiyatYanlis': edebiyatYanlis,
+      'cografya1Dogru': cografya1Dogru,
+      'cografya1Yanlis': cografya1Yanlis,
+      'tarih1Dogru': tarih1Dogru,
+      'tarih1Yanlis': tarih1Yanlis,
+      'cografya2Dogru': cografya2Dogru,
+      'cografya2Yanlis': cografya2Yanlis,
+      'tarih2Dogru': tarih2Dogru,
+      'tarih2Yanlis': tarih2Yanlis,
+      'dinDogru': dinDogru,
+      'dinYanlis': dinYanlis,
+      'felsefeDogru': felsefeDogru,
+      'felsefeYanlis': felsefeYanlis,
+      'dilDogru': dilDogru,
+      'dilYanlis': dilYanlis,
+      'yanlisKonularId': yanlisKonularId,
+      'bosKonularId': bosKonularId,
+      'denemeDate': denemeDate.toIso8601String(),
+    };
+  }
 }
 
 class CreateDers {
