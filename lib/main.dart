@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mobil_denemetakip/core/router.dart';
 import 'package:mobil_denemetakip/services/theme-service.dart';
+import 'package:mobil_denemetakip/services/use-signalr.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart' as sh;
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -13,6 +14,7 @@ Future<void> main() async {
   String? theme = await themeService.getTheme();
   sh.ColorScheme colorSchemePreference = _getColorScheme(theme);
   colorSchemePreferenceGlobal = _getColorScheme(theme);
+  // await dotenv.load(fileName: '.env');
   runApp(
     MyApp(
       themeService: themeService,
@@ -79,11 +81,11 @@ class _UygulamaState extends State<Uygulama> {
 
   @override
   Widget build(BuildContext context) {
-    return sh.ShadcnApp.router(
+    return UseSignalR(child: sh.ShadcnApp.router(
       title: 'Deneme Takip',
       routerConfig: router,
       theme: sh.ThemeData(
-        colorScheme: colorSchemePreferenceGlobal,
+        colorScheme: colorSchemePreference,
         radius: 0.7,
       ),
       scaling: const sh.AdaptiveScaling(0.9),
@@ -97,6 +99,6 @@ class _UygulamaState extends State<Uygulama> {
       supportedLocales: const [
         Locale('en', 'US'),
       ],
-    );
+    ) ) ;
   }
 }

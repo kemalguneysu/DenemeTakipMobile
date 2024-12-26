@@ -14,7 +14,6 @@ class DenemelerimScreen extends StatefulWidget {
 
 class _DenemelerimScreenState extends State<DenemelerimScreen> {
   bool isAyt = false;
-  DateTime? _date;
  
   @override
   Widget build(BuildContext context) {
@@ -42,27 +41,6 @@ class _DenemelerimScreenState extends State<DenemelerimScreen> {
                   ),
                 ),
               ],
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 10),
-              alignment: Alignment.topLeft,
-              child: Column(
-                children: [
-                  DatePicker(
-                    value: _date,
-                    mode: PromptMode.dialog,
-                    dialogTitle: const Text('Tarih Seç'),
-                    stateBuilder: (date) {
-                      return DateState.enabled;
-                    },
-                    onChanged: (value) {
-                      setState(() {
-                        _date = value;
-                      });
-                    },
-                  ),
-                ],
-              ),
             ),
             Container(
               child: isAyt?AytCreate(isAyt: isAyt):TytCreate(isAyt: isAyt),

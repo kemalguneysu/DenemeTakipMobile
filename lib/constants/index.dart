@@ -226,6 +226,21 @@ class CreateTyt {
       denemeDate: DateTime.parse(json['denemeDate']),
     );
   }
+  Map<String, dynamic> toJson() {
+    return {
+      'matematikDogru': matematikDogru,
+      'matematikYanlis': matematikYanlis,
+      'turkceDogru': turkceDogru,
+      'turkceYanlis': turkceYanlis,
+      'fenDogru': fenDogru,
+      'fenYanlis': fenYanlis,
+      'sosyalDogru': sosyalDogru,
+      'sosyalYanlis': sosyalYanlis,
+      'yanlisKonularId': yanlisKonularId,
+      'bosKonularId': bosKonularId,
+      'denemeDate': denemeDate.toIso8601String(),
+    };
+  }
 }
 
 class CreateAyt {

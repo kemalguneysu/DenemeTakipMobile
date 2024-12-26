@@ -4,6 +4,13 @@ import 'package:rxdart/rxdart.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class AuthService {
+  
+  static final AuthService _instance = AuthService._internal();
+  factory AuthService() => _instance;
+
+  AuthService._internal() {
+    identityCheck();
+  }
   final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
 
   bool _isAuthenticated = false;
@@ -19,9 +26,6 @@ class AuthService {
     'username': null,
   });
 
-  AuthService() {
-    identityCheck();
-  }
 
   // Secure Storage'dan token'ı alır
   Future<String?> getSecureStorage(String key) async {
