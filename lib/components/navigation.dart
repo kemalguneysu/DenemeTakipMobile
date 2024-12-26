@@ -1,7 +1,9 @@
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:mobil_denemetakip/main.dart';
+import 'package:mobil_denemetakip/services/theme-provider.dart';
 import 'package:mobil_denemetakip/services/theme-service.dart';
+import 'package:provider/provider.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class NavigationHeader extends StatefulWidget {
@@ -21,12 +23,20 @@ class _NavigationHeaderState extends State<NavigationHeader> {
   void initState() {
     super.initState();
     _loadTheme();
+    widget.themeService.themeNotifier.addListener(() {
+      if (mounted) {
+        setState(() {
+          isLightTheme = widget.themeService.themeNotifier.value == 'light';
+        });
+      }
+    });
   }
 
   void _loadTheme() async {
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     String? theme = await widget.themeService.getTheme();
     setState(() {
-      isLightTheme = theme == 'light';
+      isLightTheme = themeProvider.theme == 'light';
     });
   }
 
@@ -35,7 +45,8 @@ class _NavigationHeaderState extends State<NavigationHeader> {
       isLightTheme = !isLightTheme;
     });
     widget.themeService.setTheme(isLightTheme ? 'light' : 'dark');
-    isLightTheme?colorSchemePreferenceGlobal=ColorSchemes.lightZinc():colorSchemePreferenceGlobal=ColorSchemes.darkZinc();
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+    themeProvider.setTheme(isLightTheme ? 'light' : 'dark');
   }
 
   void open(BuildContext context) {
