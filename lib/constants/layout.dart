@@ -6,15 +6,14 @@ import 'package:shadcn_flutter/shadcn_flutter.dart' as sh;
 
 class Layout extends StatelessWidget {
   final Widget child; // Değişen içerik
-  final ThemeService themeService;
 
-  const Layout({super.key, required this.child, required this.themeService});
+  const Layout({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {
     return sh.Scaffold(
       backgroundColor: sh.Theme.of(context).colorScheme.card,
-      headers: [NavigationHeader(themeService: themeService)],
+      headers: [NavigationHeader()],
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 12),
         child: child,

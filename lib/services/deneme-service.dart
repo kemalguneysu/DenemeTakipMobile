@@ -61,4 +61,69 @@ class DenemeService {
       throw error.toString();
     }
   }
+  Future<Map<String, dynamic>?> getLastTyt({
+    Function()? successCallBack,
+    Function(String errorMessage)? errorCallBack,
+  }) async {
+    try {
+      final response = await fetchWithAuth.fetchWithAuth(
+        '$apiBaseUrl/HomePage/GetLastTytDeneme',
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        if (successCallBack != null) {
+          successCallBack();
+        }
+        return jsonDecode(response.body);
+      } else {
+        final errorBody = jsonDecode(response.body);
+        final errorMessage = errorBody is List
+            ? errorBody.map((e) => e['value']).join('\n')
+            : 'TYT denemesi alınırken bir hata oluştu: ${response.reasonPhrase}';
+        throw errorMessage;
+      }
+    } catch (error) {
+      if (errorCallBack != null) {
+        errorCallBack(error.toString());
+      }
+            return null;
+
+    }
+  }
+  Future<Map<String, dynamic>?> getLastAyt({
+    Function()? successCallBack,
+    Function(String errorMessage)? errorCallBack,
+  }) async {
+    try {
+      final response = await fetchWithAuth.fetchWithAuth(
+        '$apiBaseUrl/HomePage/GetLastAytDeneme',
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        if (successCallBack != null) {
+          successCallBack();
+        }
+        return jsonDecode(response.body);
+      } else {
+        final errorBody = jsonDecode(response.body);
+        final errorMessage = errorBody is List
+            ? errorBody.map((e) => e['value']).join('\n')
+            : 'AYT denemesi alınırken bir hata oluştu: ${response.reasonPhrase}';
+        throw errorMessage;
+      }
+    } catch (error) {
+      if (errorCallBack != null) {
+        errorCallBack(error.toString());
+      }
+      return null;
+    }
+  }
 }

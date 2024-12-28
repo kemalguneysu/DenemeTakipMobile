@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mobil_denemetakip/components/home/authenticated/authenticatedHome.dart';
+import 'package:mobil_denemetakip/components/home/notAuthenticatedHome.dart';
 import 'package:mobil_denemetakip/services/auth-service.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -21,15 +23,8 @@ class HomeScreen extends StatelessWidget {
 
         final userStatus = snapshot.data!;
 
-        String displayText = userStatus['isAuthenticated']
-            ? (userStatus['isAdmin'] ? "62" : "auth")
-            : "31";
-
-        return Center(
-          child: Text(
-            displayText,
-            style: const TextStyle(fontSize: 18),
-          ),
+        return Container(
+          child: userStatus['isAuthenticated']?AuthenticatedHome():NotAuthenticatedHome(),
         );
       },
     );

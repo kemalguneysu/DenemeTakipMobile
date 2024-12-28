@@ -28,67 +28,67 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/',
       builder: (context, state) {
-        return Layout(child: HomeScreen(), themeService: themeService);
+        return Layout(child: HomeScreen());
       },
     ),
     GoRoute(
       path: '/denemelerim',
       builder: (context, state) {
-        return  Layout(child: DenemelerimScreen(), themeService: themeService);
+        return  Layout(child: DenemelerimScreen());
       },
     ),
     GoRoute(
       path: '/analizlerim',
       builder: (context, state) {
-        return  Layout(child: AnalizlerimScreen(), themeService: themeService);
+        return  Layout(child: AnalizlerimScreen());
       },
     ),
     GoRoute(
       path: '/konu-takip',
       builder: (context, state) {
-        return  Layout(child: KonuTakipScreen(), themeService: themeService);
+        return  Layout(child: KonuTakipScreen());
       },
     ),
     GoRoute(
       path: '/yapilacaklar',
       builder: (context, state) {
-        return  Layout(child: YapilacaklarScreen(), themeService: themeService);
+        return  Layout(child: YapilacaklarScreen());
       },
     ),
     GoRoute(
       path: '/notlarim',
       builder: (context, state) {
-        return  Layout(child: NotlarimScreen(), themeService: themeService);
+        return  Layout(child: NotlarimScreen());
       },
     ),
     GoRoute(
       path: '/pomodoro',
       builder: (context, state) {
-        return  Layout(child: PomodoroScreen(), themeService: themeService);
+        return  Layout(child: PomodoroScreen());
       },
     ),
     GoRoute(
       path: '/giris-yap',
       builder: (context, state) {
-        return  Layout(child: GirisYapScreen(), themeService: themeService);
+        return  Layout(child: GirisYapScreen());
       },
     ),
     GoRoute(
       path: '/hesabim',
       builder: (context, state) {
-        return  Layout(child: HesabimScreen(), themeService: themeService);
+        return  Layout(child: HesabimScreen());
       },
     ),
     GoRoute(
       path: '/kayit-ol',
       builder: (context, state) {
-        return  Layout(child: KayitOlScreen(), themeService: themeService);
+        return  Layout(child: KayitOlScreen());
       },
     ),
     GoRoute(
       path: '/sifremi-unuttum',
       builder: (context, state) {
-        return  Layout(child: SifremiUnuttumScreen(), themeService: themeService);
+        return  Layout(child: SifremiUnuttumScreen());
       },
     ),
     GoRoute(
@@ -97,7 +97,7 @@ final GoRouter router = GoRouter(
         final userId = state.pathParameters['userId']!;
         final resetToken = state.pathParameters['resetToken']!;
         return Layout(
-          child: SifreyiYenileScreen(userId: userId, resetToken: resetToken), themeService: themeService
+          child: SifreyiYenileScreen(userId: userId, resetToken: resetToken)
         );
       },
     ),
@@ -105,14 +105,14 @@ final GoRouter router = GoRouter(
       path: '/denemelerim/tyt/:tytId',
       builder: (context, state) {
         final tytId = state.pathParameters['tytId']!;
-        return Layout(child: TytScreen(tytId: tytId), themeService: themeService);
+        return Layout(child: TytScreen(tytId: tytId));
       },
     ),
     GoRoute(
       path: '/denemelerim/ayt/:aytId',
       builder: (context, state) {
         final aytId = state.pathParameters['aytId']!;
-        return Layout(child: AytScreen(aytId: aytId), themeService: themeService);
+        return Layout(child: AytScreen(aytId: aytId));
       },
     ),
   ],

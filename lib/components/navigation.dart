@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:mobil_denemetakip/core/router.dart';
 import 'package:mobil_denemetakip/main.dart';
 import 'package:mobil_denemetakip/services/theme-provider.dart';
 import 'package:mobil_denemetakip/services/theme-service.dart';
@@ -7,9 +8,8 @@ import 'package:provider/provider.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 class NavigationHeader extends StatefulWidget {
-  final ThemeService themeService;
 
-  const NavigationHeader({Key? key, required this.themeService})
+  const NavigationHeader({Key? key,})
       : super(key: key);
 
   @override
@@ -21,12 +21,13 @@ class _NavigationHeaderState extends State<NavigationHeader> {
 
   @override
   void initState() {
+    final themeService = ThemeService();
     super.initState();
     _loadTheme();
-    widget.themeService.themeNotifier.addListener(() {
+    themeService.themeNotifier.addListener(() {
       if (mounted) {
         setState(() {
-          isLightTheme = widget.themeService.themeNotifier.value == 'light';
+          isLightTheme = themeService.themeNotifier.value == 'light';
         });
       }
     });
@@ -34,7 +35,7 @@ class _NavigationHeaderState extends State<NavigationHeader> {
 
   void _loadTheme() async {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
-    String? theme = await widget.themeService.getTheme();
+    String? theme = await themeService.getTheme();
     setState(() {
       isLightTheme = themeProvider.theme == 'light';
     });
@@ -44,7 +45,7 @@ class _NavigationHeaderState extends State<NavigationHeader> {
     setState(() {
       isLightTheme = !isLightTheme;
     });
-    widget.themeService.setTheme(isLightTheme ? 'light' : 'dark');
+    themeService.setTheme(isLightTheme ? 'light' : 'dark');
     final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     themeProvider.setTheme(isLightTheme ? 'light' : 'dark');
   }

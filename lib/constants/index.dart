@@ -941,7 +941,6 @@ class UserById {
 
 class HomePageTyt {
   late String id;
-  late DateTime createdDate;
   late int turkceDogru;
   late int turkceYanlis;
   late int matematikDogru;
@@ -951,10 +950,10 @@ class HomePageTyt {
   late int sosyalDogru;
   late int sosyalYanlis;
   late double toplamNet;
+  late DateTime denemeDate;
 
   HomePageTyt({
     required this.id,
-    required this.createdDate,
     required this.turkceDogru,
     required this.turkceYanlis,
     required this.matematikDogru,
@@ -964,12 +963,12 @@ class HomePageTyt {
     required this.sosyalDogru,
     required this.sosyalYanlis,
     required this.toplamNet,
+    required this.denemeDate,
   });
 
   factory HomePageTyt.fromJson(Map<String, dynamic> json) {
     return HomePageTyt(
       id: json['id'],
-      createdDate: DateTime.parse(json['createdDate']),
       turkceDogru: json['turkceDogru'],
       turkceYanlis: json['turkceYanlis'],
       matematikDogru: json['matematikDogru'],
@@ -979,13 +978,13 @@ class HomePageTyt {
       sosyalDogru: json['sosyalDogru'],
       sosyalYanlis: json['sosyalYanlis'],
       toplamNet: json['toplamNet'],
+      denemeDate: DateTime.parse(json['denemeDate']),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'createdDate': createdDate.toIso8601String(),
       'turkceDogru': turkceDogru,
       'turkceYanlis': turkceYanlis,
       'matematikDogru': matematikDogru,
@@ -1001,7 +1000,6 @@ class HomePageTyt {
 
 class HomePageAyt {
   late String id;
-  late DateTime createdDate;
   late int matematikDogru;
   late int matematikYanlis;
   late int fizikDogru;
@@ -1030,10 +1028,10 @@ class HomePageAyt {
   late double esitAgirlikNet;
   late double sozelNet;
   late double dilNet;
+  late DateTime denemeDate;
 
   HomePageAyt({
     required this.id,
-    required this.createdDate,
     required this.matematikDogru,
     required this.matematikYanlis,
     required this.fizikDogru,
@@ -1062,12 +1060,13 @@ class HomePageAyt {
     required this.esitAgirlikNet,
     required this.sozelNet,
     required this.dilNet,
+    required this.denemeDate,
+
   });
 
   factory HomePageAyt.fromJson(Map<String, dynamic> json) {
     return HomePageAyt(
       id: json['id'],
-      createdDate: DateTime.parse(json['createdDate']),
       matematikDogru: json['matematikDogru'],
       matematikYanlis: json['matematikYanlis'],
       fizikDogru: json['fizikDogru'],
@@ -1096,13 +1095,13 @@ class HomePageAyt {
       esitAgirlikNet: json['esitAgirlikNet'],
       sozelNet: json['sozelNet'],
       dilNet: json['dilNet'],
+      denemeDate: DateTime.parse(json['denemeDate']),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'createdDate': createdDate.toIso8601String(),
       'matematikDogru': matematikDogru,
       'matematikYanlis': matematikYanlis,
       'fizikDogru': fizikDogru,

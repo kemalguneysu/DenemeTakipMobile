@@ -532,7 +532,7 @@ class _AytCreateState extends State<AytCreate> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          'Yanlış veya Boş Konu Seç',
+                                          'Yanlış veya Boş Konu Seç',style: TextStyle(fontSize: 14)
                                         ),
                                         Icon(LucideIcons.chevronsUpDown),
                                       ],
@@ -546,7 +546,7 @@ class _AytCreateState extends State<AytCreate> {
                 width: double.infinity,
                 margin: const EdgeInsets.symmetric(vertical: 10),
                 child: PrimaryButton(
-                  child: Text("Deneme Ekle"),
+                  child: Text("Deneme Ekle", style: TextStyle(fontSize: 14)),
                   onPressed: () {
                     createAyt();
                   },

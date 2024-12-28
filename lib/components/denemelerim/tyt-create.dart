@@ -506,7 +506,7 @@ class _TytCreateState extends State<TytCreate> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          'Yanlış veya Boş Konu Seç',
+                                          'Yanlış veya Boş Konu Seç',style: TextStyle(fontSize: 14)
                                         ),
                                         Icon(LucideIcons.chevronsUpDown),
                                       ],
@@ -520,7 +520,7 @@ class _TytCreateState extends State<TytCreate> {
                 width: double.infinity,
                 margin: const EdgeInsets.symmetric(vertical: 10),
                 child: PrimaryButton(
-                  child: Text("Deneme Ekle"),
+                  child: Text("Deneme Ekle", style: TextStyle(fontSize: 14)),
                   onPressed: () {
                     createTyt();
                   },
