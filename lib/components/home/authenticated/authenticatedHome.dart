@@ -1,7 +1,9 @@
 import 'package:mobil_denemetakip/components/home/authenticated/ayt-card.dart';
+import 'package:mobil_denemetakip/components/home/authenticated/ayt-carousel.dart';
 import 'package:mobil_denemetakip/components/home/authenticated/countDownTimer.dart';
 import 'package:mobil_denemetakip/components/home/authenticated/todayToDo.dart';
 import 'package:mobil_denemetakip/components/home/authenticated/tyt-card.dart';
+import 'package:mobil_denemetakip/components/home/authenticated/tyt-carousel.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 class AuthenticatedHome extends StatefulWidget {
   @override
@@ -16,8 +18,10 @@ class _AuthenticatedHomeState extends State<AuthenticatedHome> {
         children: [
           CountDownTimer(),
           TytCard(),
+          TytCarousel(),
           TodayToDo(),
-          AytCard()
+          AytCard(),
+          AytCarousel()
         ],
       )
     );
