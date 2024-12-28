@@ -1,5 +1,6 @@
 import 'package:mobil_denemetakip/components/home/authenticated/ayt-card.dart';
 import 'package:mobil_denemetakip/components/home/authenticated/countDownTimer.dart';
+import 'package:mobil_denemetakip/components/home/authenticated/todayToDo.dart';
 import 'package:mobil_denemetakip/components/home/authenticated/tyt-card.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 class AuthenticatedHome extends StatefulWidget {
@@ -15,6 +16,7 @@ class _AuthenticatedHomeState extends State<AuthenticatedHome> {
         children: [
           CountDownTimer(),
           TytCard(),
+          TodayToDo(),
           AytCard()
         ],
       )

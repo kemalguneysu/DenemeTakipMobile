@@ -1439,7 +1439,7 @@ class ListToDoElement {
     return ListToDoElement(
       date: DateTime.parse(json['date']),
       toDoElements: (json['toDoElements'] as List)
-          .map((i) => ToDoElements.fromJson(i))
+          .map((item) => ToDoElements.fromJson(item as Map<String, dynamic>))
           .toList(),
     );
   }
@@ -1451,7 +1451,32 @@ class ListToDoElement {
     };
   }
 }
+class ToDoElementCreate{
+  late String toDoElementTitle;
+  late DateTime toDoDate;
+  late bool isCompleted;
 
+  ToDoElementCreate({
+    required this.toDoElementTitle,
+    required this.toDoDate,
+    required this.isCompleted,  
+  });
+  factory ToDoElementCreate.fromJson(Map<String, dynamic> json) {
+    return ToDoElementCreate(
+      toDoElementTitle: json['toDoElementTitle'],
+      toDoDate: DateTime.parse(json['toDoDate']),
+      isCompleted: json['isCompleted'],
+    );
+  }
+  Map<String, dynamic> toJson() {
+    return {
+      'toDoElementTitle': toDoElementTitle,
+      'toDoDate': toDoDate.toIso8601String(),
+      'isCompleted': isCompleted,
+    };
+  }
+
+}
 class ToDoElements {
   late String id;
   late String toDoElementTitle;

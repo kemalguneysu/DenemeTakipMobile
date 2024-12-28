@@ -4,10 +4,12 @@ import 'dart:ui';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:mobil_denemetakip/constants/index.dart';
+import 'package:mobil_denemetakip/services/fetchWithAuth.dart';
 
 class DerslerService {
   // dotenv.env['API_BASE_URL'] ??
   final String apiBaseUrl = 'https://api.denemetakip.com/api';
+  final fetchWithAuth = FetchWithAuth();
   Future<Map<String, dynamic>> getAllDers({
     bool? isTyt,
     String? dersAdi,
@@ -31,8 +33,9 @@ class DerslerService {
 
     try {
       // API'den veri çekme
-      final response = await http.get(
-        Uri.parse('$apiBaseUrl/Ders/GetAllDersler?$queryString'),
+      final response = await fetchWithAuth.fetchWithAuth(
+        ('$apiBaseUrl/Ders/GetAllDersler?$queryString'),
+        method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
