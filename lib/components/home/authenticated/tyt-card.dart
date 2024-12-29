@@ -60,7 +60,9 @@ class _TytCardState extends State<TytCard> {
       isLoading.value = false;
     }
   }
-
+  String formatValue(double value) {
+    return value % 1 == 0 ? value.toStringAsFixed(0) : value.toStringAsFixed(2);
+  }
   @override
   void dispose() {
     final userId = authService.userId;
@@ -168,7 +170,7 @@ class _TytCardState extends State<TytCard> {
                                 AccordionItem(
                                   trigger: AccordionTrigger(
                                     child: Text(
-                                        "Türkçe Net: ${(_lastTyt!.turkceDogru - 0.25 * _lastTyt!.turkceYanlis).toStringAsFixed(2)}",
+                                        "Türkçe Net: ${formatValue(_lastTyt!.turkceDogru - 0.25 * _lastTyt!.turkceYanlis)}",
                                         style: TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.w600)),
@@ -189,7 +191,7 @@ class _TytCardState extends State<TytCard> {
                                 AccordionItem(
                                   trigger: AccordionTrigger(
                                     child: Text(
-                                        "Matematik Net: ${(_lastTyt!.matematikDogru - 0.25 * _lastTyt!.matematikYanlis).toStringAsFixed(2)}",
+                                        "Matematik Net: ${formatValue(_lastTyt!.matematikDogru - 0.25 * _lastTyt!.matematikYanlis)}",
                                         style: TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.w600)),
@@ -210,7 +212,7 @@ class _TytCardState extends State<TytCard> {
                                 AccordionItem(
                                   trigger: AccordionTrigger(
                                     child: Text(
-                                        "Fen Net: ${(_lastTyt!.fenDogru - 0.25 * _lastTyt!.fenYanlis).toStringAsFixed(2)}",
+                                        "Fen Net: ${formatValue(_lastTyt!.fenDogru - 0.25 * _lastTyt!.fenYanlis)}",
                                         style: TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.w600)),
@@ -229,7 +231,7 @@ class _TytCardState extends State<TytCard> {
                                 AccordionItem(
                                   trigger: AccordionTrigger(
                                     child: Text(
-                                        "Sosyal Net: ${(_lastTyt!.sosyalDogru - 0.25 * _lastTyt!.sosyalYanlis).toStringAsFixed(2)}",
+                                        "Sosyal Net: ${formatValue(_lastTyt!.sosyalDogru - 0.25 * _lastTyt!.sosyalYanlis)}",
                                         style: TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.w600)),
@@ -254,7 +256,7 @@ class _TytCardState extends State<TytCard> {
                       )),
                       Container(
                         margin: const EdgeInsets.only(top: 16),
-                        child: Text("Toplam Net: ${_lastTyt!.toplamNet}",
+                        child: Text("Toplam Net: ${formatValue(_lastTyt!.toplamNet)}",
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.w600)),
                       ),

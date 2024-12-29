@@ -70,7 +70,6 @@ class _TytCarouselState extends State<TytCarousel> {
         valueListenable: isLoading,
         builder: (BuildContext context, isLoadingInside, _) {
           return SizedBox(
-            height: 800,
             child: Column(
               children: [
                 SizedBox(
@@ -161,8 +160,9 @@ class _TytCarouselState extends State<TytCarousel> {
                     },
                   ),
                 ),
+                SizedBox(height: 5,),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     OutlineButton(
                       shape: ButtonShape.circle,
