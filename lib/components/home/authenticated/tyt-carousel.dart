@@ -73,7 +73,7 @@ class _TytCarouselState extends State<TytCarousel> {
             child: Column(
               children: [
                 SizedBox(
-                  height: konular.value.length == 0 ? 180 : min(150+konular.value.length*30,220),
+                  height: konular.value.length == 0 ? 180 : min(150+konular.value.length*30,240),
                   child: Carousel(
                     onIndexChanged: (value) => {
                       if (value == dersler.length)

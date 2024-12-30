@@ -75,7 +75,7 @@ class _AytCarouselState extends State<AytCarousel> {
                 SizedBox(
                   height: konular.value.length == 0
                       ? 180
-                      : min(150 + konular.value.length * 30, 220),
+                      : min(150 + konular.value.length * 30, 240),
                   child: Carousel(
                     onIndexChanged: (value) => {
                       if (value == dersler.length)

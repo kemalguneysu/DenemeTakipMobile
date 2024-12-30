@@ -38,7 +38,7 @@ class _TytCreateState extends State<TytCreate> {
   int totalCountOfKonular = 0;
   String selectedDersId = "";
   int page = 1;
-  int pageSize = 5;
+  int pageSize = 10;
   List<String> bosKonularId = [];
   List<String> yanlisKonularId = [];
   DateTime? _denemeDate;
@@ -330,13 +330,11 @@ class _TytCreateState extends State<TytCreate> {
                                   showPopover(
                                     context: context,
                                     alignment: Alignment.topCenter,
-                                    offset: const Offset(0, 8),
-                                    overlayBarrier: OverlayBarrier(),
                                     builder: (context) {
                                       return SurfaceCard(
                                         child: SizedBox(
                                           width: 300,
-                                          height: 200,
+                                          height: 400,
                                           child: Column(
                                             mainAxisSize: MainAxisSize.min,
                                             crossAxisAlignment:

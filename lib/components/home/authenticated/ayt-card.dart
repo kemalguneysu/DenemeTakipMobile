@@ -140,7 +140,7 @@ class _AytCardState extends State<AytCard> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Son Ayt Denemesi",
+                              "Son AYT Denemesi",
                               textAlign: TextAlign.start,
                               style: TextStyle(
                                 fontSize: 22,
@@ -154,7 +154,7 @@ class _AytCardState extends State<AytCard> {
                                 DateFormat('dd/MM/yyyy').format(denemeDate),
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
@@ -775,18 +775,16 @@ class _AytCardState extends State<AytCard> {
                                         CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                        "Dil Doğru: ${_lastAyt!.dilDogru}",
+                                        "Doğru: ${_lastAyt!.dilDogru}",
                                         style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight:
-                                            FontWeight.w600),
+                                          fontSize: 14,
+                                          ),
                                         ),
                                         Text(
-                                        "Dil Yanlış: ${_lastAyt!.dilYanlis}",
+                                        "Yanlış: ${_lastAyt!.dilYanlis}",
                                         style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight:
-                                            FontWeight.w600),
+                                          fontSize: 14,
+                                          ),
                                         ),
                                       ],
                                       ),
@@ -804,7 +802,7 @@ class _AytCardState extends State<AytCard> {
                         margin: const EdgeInsets.only(top: 16),
                         alignment: Alignment.bottomRight,
                         child: PrimaryButton(
-                          child: Text("Detayları Gör"),
+                          child: Text("Detayları Gör",style: TextStyle(fontSize: 14),),
                           onPressed: () {
                             context.go("/denemelerim/Ayt/${_lastAyt!.id}");
                           },

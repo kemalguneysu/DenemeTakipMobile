@@ -151,7 +151,7 @@ class _TytCardState extends State<TytCard> {
                                 DateFormat('dd/MM/yyyy').format(denemeDate),
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
@@ -264,7 +264,7 @@ class _TytCardState extends State<TytCard> {
                         margin: const EdgeInsets.only(top: 16),
                         alignment: Alignment.bottomRight,
                         child: PrimaryButton(
-                          child: Text("Detayları Gör"),
+                          child: Text("Detayları Gör",style: TextStyle(fontSize: 14),),
                           onPressed: () {
                             context.go("/denemelerim/tyt/${_lastTyt!.id}");
                           },

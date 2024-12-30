@@ -16,14 +16,14 @@ class HomeScreen extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         }
-
         if (snapshot.hasError) {
-          return const Center(child: Text('Error loading user data'));
+          return const Center(child: Text(''));
         }
 
         final userStatus = snapshot.data!;
 
         return Container(
+          margin: const EdgeInsets.only(top: 20),
           child: userStatus['isAuthenticated']?AuthenticatedHome():NotAuthenticatedHome(),
         );
       },
