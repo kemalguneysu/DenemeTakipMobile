@@ -27,6 +27,5 @@ class _YapilacaklarScreenState extends State<YapilacaklarScreen> {
   @override
   Widget build(BuildContext context) {
     return Yapilacaklar();
-    
   }
 }

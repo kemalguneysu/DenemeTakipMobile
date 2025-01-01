@@ -233,13 +233,11 @@ class _TytCreateState extends State<TytCreate> {
     return ValueListenableBuilder(
       valueListenable: isLoading,
       builder: (BuildContext context, isLoadingInside, _) {
-        if(isLoadingInside){
-          return  SpinnerWidget();
-        }
-        else{
-          return 
-          SingleChildScrollView(
-            child: Column(
+        if (isLoadingInside) {
+          return SpinnerWidget();
+        } else {
+          return SingleChildScrollView(
+              child: Column(
             children: [
               Container(
                 margin: EdgeInsets.only(top: 10),
@@ -434,48 +432,83 @@ class _TytCreateState extends State<TytCreate> {
                                                                             ),
                                                                             Row(
                                                                               children: [
-                                                                                Text("Yanlış"),
-                                                                                ValueListenableBuilder<List<String>>(
-                                                                                  valueListenable: yanlisKonularNotifier,
-                                                                                  builder: (context, yanlisKonular, _) {
-                                                                                    return Checkbox(
-                                                                                      state: yanlisKonularId.contains(konu.id) ? CheckboxState.checked : CheckboxState.unchecked,
-                                                                                      onChanged: (CheckboxState newState) {
-                                                                                        setState(() {
-                                                                                          if (newState == CheckboxState.checked) {
-                                                                                            yanlisKonularId.add(konu.id);
-                                                                                          } else {
-                                                                                            yanlisKonularId.remove(konu.id);
-                                                                                          }
-                                                                                          yanlisKonularNotifier.value = List.from(yanlisKonularId);
-                                                                                        });
-                                                                                      },
-                                                                                    );
+                                                                                GestureDetector(
+                                                                                  onTap: () {
+                                                                                    setState(() {
+                                                                                      final newState = yanlisKonularId.contains(konu.id) ? CheckboxState.unchecked : CheckboxState.checked;
+
+                                                                                      if (newState == CheckboxState.checked) {
+                                                                                        yanlisKonularId.add(konu.id);
+                                                                                      } else {
+                                                                                        yanlisKonularId.remove(konu.id);
+                                                                                      }
+                                                                                      yanlisKonularNotifier.value = List.from(yanlisKonularId);
+                                                                                    });
                                                                                   },
+                                                                                  child: Row(
+                                                                                    children: [
+                                                                                      Text("Yanlış"),
+                                                                                      ValueListenableBuilder<List<String>>(
+                                                                                        valueListenable: yanlisKonularNotifier,
+                                                                                        builder: (context, yanlisKonular, _) {
+                                                                                          return Checkbox(
+                                                                                            state: yanlisKonularId.contains(konu.id) ? CheckboxState.checked : CheckboxState.unchecked,
+                                                                                            onChanged: (CheckboxState? newState) {
+                                                                                              setState(() {
+                                                                                                if (newState == CheckboxState.checked) {
+                                                                                                  yanlisKonularId.add(konu.id);
+                                                                                                } else {
+                                                                                                  yanlisKonularId.remove(konu.id);
+                                                                                                }
+                                                                                                yanlisKonularNotifier.value = List.from(yanlisKonularId);
+                                                                                              });
+                                                                                            },
+                                                                                          );
+                                                                                        },
+                                                                                      ),
+                                                                                    ],
+                                                                                  ),
                                                                                 ),
                                                                               ],
                                                                             ),
-                                                                            // Boş Checkbox
                                                                             Row(
                                                                               children: [
-                                                                                Text("Boş"),
-                                                                                ValueListenableBuilder<List<String>>(
-                                                                                  valueListenable: bosKonularNotifier,
-                                                                                  builder: (context, bosKonular, _) {
-                                                                                    return Checkbox(
-                                                                                      state: bosKonularId.contains(konu.id) ? CheckboxState.checked : CheckboxState.unchecked,
-                                                                                      onChanged: (CheckboxState newState) {
-                                                                                        setState(() {
-                                                                                          if (newState == CheckboxState.checked) {
-                                                                                            bosKonularId.add(konu.id);
-                                                                                          } else {
-                                                                                            bosKonularId.remove(konu.id);
-                                                                                          }
-                                                                                          bosKonularNotifier.value = List.from(bosKonularId);
-                                                                                        });
-                                                                                      },
-                                                                                    );
+                                                                                GestureDetector(
+                                                                                  onTap: () {
+                                                                                    setState(() {
+                                                                                      final newState = bosKonularId.contains(konu.id) ? CheckboxState.unchecked : CheckboxState.checked;
+
+                                                                                      if (newState == CheckboxState.checked) {
+                                                                                        bosKonularId.add(konu.id);
+                                                                                      } else {
+                                                                                        bosKonularId.remove(konu.id);
+                                                                                      }
+                                                                                      bosKonularNotifier.value = List.from(bosKonularId);
+                                                                                    });
                                                                                   },
+                                                                                  child: Row(
+                                                                                    children: [
+                                                                                      Text("Boş"),
+                                                                                      ValueListenableBuilder<List<String>>(
+                                                                                        valueListenable: bosKonularNotifier,
+                                                                                        builder: (context, bosKonular, _) {
+                                                                                          return Checkbox(
+                                                                                            state: bosKonularId.contains(konu.id) ? CheckboxState.checked : CheckboxState.unchecked,
+                                                                                            onChanged: (CheckboxState? newState) {
+                                                                                              setState(() {
+                                                                                                if (newState == CheckboxState.checked) {
+                                                                                                  bosKonularId.add(konu.id);
+                                                                                                } else {
+                                                                                                  bosKonularId.remove(konu.id);
+                                                                                                }
+                                                                                                bosKonularNotifier.value = List.from(bosKonularId);
+                                                                                              });
+                                                                                            },
+                                                                                          );
+                                                                                        },
+                                                                                      ),
+                                                                                    ],
+                                                                                  ),
                                                                                 ),
                                                                               ],
                                                                             ),
@@ -503,9 +536,8 @@ class _TytCreateState extends State<TytCreate> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text(
-                                          'Yanlış veya Boş Konu Seç',style: TextStyle(fontSize: 14)
-                                        ),
+                                        Text('Yanlış veya Boş Konu Seç',
+                                            style: TextStyle(fontSize: 14)),
                                         Icon(LucideIcons.chevronsUpDown),
                                       ],
                                     ))),
@@ -524,10 +556,9 @@ class _TytCreateState extends State<TytCreate> {
                   },
                 ),
               ),
-              
             ],
           ));
-          }
+        }
       },
     );
   }

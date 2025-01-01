@@ -37,7 +37,6 @@ class _TytCarouselState extends State<TytCarousel> {
   }
 
   Future<void> _fetchKonular(String dersId) async {
-    isLoading.value = true;
     try {
       final result = await denemeService.getTytAnaliz(
         denemeSayisi: 5,
@@ -55,7 +54,6 @@ class _TytCarouselState extends State<TytCarousel> {
         errorToast("Hata", "$error", Navigator.of(context).context);
       }
     }
-    isLoading.value = false;
   }
 
   @override
@@ -73,7 +71,9 @@ class _TytCarouselState extends State<TytCarousel> {
             child: Column(
               children: [
                 SizedBox(
-                  height: konular.value.length == 0 ? 180 : min(150+konular.value.length*30,240),
+                  height: konular.value.length == 0
+                      ? 180
+                      : min(150 + konular.value.length * 40, 300),             
                   child: Carousel(
                     onIndexChanged: (value) => {
                       if (value == dersler.length)

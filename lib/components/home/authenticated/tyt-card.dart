@@ -175,18 +175,22 @@ class _TytCardState extends State<TytCard> {
                                             fontSize: 18,
                                             fontWeight: FontWeight.w600)),
                                   ),
-                                  content: Column(
+                                  content: Padding(
+                                    padding: EdgeInsets.only(left: 16),
+                                    child: Column(
+                                    
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                          "Türkçe Doğru: ${_lastTyt!.turkceDogru}",
+                                          "Doğru: ${_lastTyt!.turkceDogru}",
                                           style: TextStyle(fontSize: 16)),
                                       Text(
-                                          "Türkçe Yanlış: ${_lastTyt!.turkceYanlis}",
+                                          "Yanlış: ${_lastTyt!.turkceYanlis}",
                                           style: TextStyle(fontSize: 16)),
                                     ],
-                                  ),
+                                  )
+                                  ) ,
                                 ),
                                 AccordionItem(
                                   trigger: AccordionTrigger(
@@ -196,18 +200,21 @@ class _TytCardState extends State<TytCard> {
                                             fontSize: 18,
                                             fontWeight: FontWeight.w600)),
                                   ),
-                                  content: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                          "Matematik Doğru: ${_lastTyt!.matematikDogru}",
-                                          style: TextStyle(fontSize: 16)),
-                                      Text(
-                                          "Matematik Yanlış: ${_lastTyt!.matematikYanlis}",
-                                          style: TextStyle(fontSize: 16)),
-                                    ],
-                                  ),
+                                  content: Padding(
+                                    padding: EdgeInsets.only(left: 16),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                            "Doğru: ${_lastTyt!.matematikDogru}",
+                                            style: TextStyle(fontSize: 16)),
+                                        Text(
+                                            "Yanlış: ${_lastTyt!.matematikYanlis}",
+                                            style: TextStyle(fontSize: 16)),
+                                      ],
+                                    ),
+                                    ) ,
                                 ),
                                 AccordionItem(
                                   trigger: AccordionTrigger(
@@ -217,16 +224,21 @@ class _TytCardState extends State<TytCard> {
                                             fontSize: 18,
                                             fontWeight: FontWeight.w600)),
                                   ),
-                                  content: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Fen Doğru: ${_lastTyt!.fenDogru}",
-                                          style: TextStyle(fontSize: 16)),
-                                      Text("Fen Yanlış: ${_lastTyt!.fenYanlis}",
-                                          style: TextStyle(fontSize: 16)),
-                                    ],
-                                  ),
+                                  content: Padding(
+                                    padding: EdgeInsets.only(left: 16),
+                                    child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                              "Doğru: ${_lastTyt!.fenDogru}",
+                                              style: TextStyle(fontSize: 16)),
+                                          Text(
+                                              "Yanlış: ${_lastTyt!.fenYanlis}",
+                                              style: TextStyle(fontSize: 16)),
+                                        ],
+                                      )
+                                    ) ,
                                 ),
                                 AccordionItem(
                                   trigger: AccordionTrigger(
@@ -236,18 +248,21 @@ class _TytCardState extends State<TytCard> {
                                             fontSize: 18,
                                             fontWeight: FontWeight.w600)),
                                   ),
-                                  content: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                          "Sosyal Doğru: ${_lastTyt!.sosyalDogru}",
-                                          style: TextStyle(fontSize: 16)),
-                                      Text(
-                                          "Sosyal Yanlış: ${_lastTyt!.sosyalYanlis}",
-                                          style: TextStyle(fontSize: 16)),
-                                    ],
-                                  ),
+                                  content: Padding(
+                                    padding: EdgeInsets.only(left: 16),
+                                    child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                              "Doğru: ${_lastTyt!.sosyalDogru}",
+                                              style: TextStyle(fontSize: 16)),
+                                          Text(
+                                              "Yanlış: ${_lastTyt!.sosyalYanlis}",
+                                              style: TextStyle(fontSize: 16)),
+                                        ],
+                                      )
+                                    ) ,
                                 )
                               ]),
                             )

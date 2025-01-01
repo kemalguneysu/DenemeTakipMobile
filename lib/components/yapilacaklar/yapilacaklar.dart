@@ -528,7 +528,9 @@ class _YapilacaklarState extends State<Yapilacaklar> {
 
                     final currentDayToDos = _userToDos
                         .where((element) =>
-                            element.date.isAtSameMomentAs(currentDay))
+                            element.date.year == currentDay.year &&
+                            element.date.month == currentDay.month &&
+                            element.date.day == currentDay.day)
                         .toList();
 
                     return GestureDetector(

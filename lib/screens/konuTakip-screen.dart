@@ -1,15 +1,24 @@
-import 'package:flutter/material.dart';
+import 'package:mobil_denemetakip/components/konu-takip/konu-takip.dart';
+import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-class KonuTakipScreen extends StatelessWidget {
-  const KonuTakipScreen({Key? key}) : super(key: key);
+class KonuTakipScreen extends StatefulWidget {
+  const KonuTakipScreen({super.key});
 
   @override
+  State<KonuTakipScreen> createState() => _KonuTakipScreenState();
+}
+
+class _KonuTakipScreenState extends State<KonuTakipScreen> {
+  @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        "Ana Sayfa İçeriği",
-        style: TextStyle(fontSize: 18),
-      ),
+    return SingleChildScrollView(
+      child: Container(
+        child: Column(
+          children: [
+            KonuTakip()
+          ]
+        )
+      )
     );
   }
 }
