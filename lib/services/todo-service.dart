@@ -135,6 +135,50 @@ class TodoService {
       throw error; 
     }
   }
+  Future<Map<String, dynamic>> getToDoElements(
+    DateTime toDoDateStart,
+    DateTime toDoDateEnd, {
+    bool? isCompleted,
+    Function? successCallBack,
+    Function(String)? errorCallBack,
+  }) async {
+    String queryString = "";
 
+    queryString +=
+        "ToDoDateStart=${Uri.encodeComponent(toDoDateStart.toIso8601String())}";
+    queryString +=
+        "&ToDoDateEnd=${Uri.encodeComponent(toDoDateEnd.toIso8601String())}";
+
+    // isCompleted parametresi varsa, ekleyin
+    if (isCompleted != null) {
+      queryString += "&IsCompleted=$isCompleted";
+    }
+
+    try {
+      final response = await fetchWithAuth.fetchWithAuth(
+        '$apiBaseUrl/ToDoElement/GetToDoElement?$queryString',
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+
+        if (successCallBack != null) {
+          successCallBack();
+        }
+
+        return {
+          'totalCount': data['totalCount'],
+          'toDoElements': data['toDoElements'], 
+        };
+      } else {
+        throw Exception('Yapılacak hedefler alınırken hata oluştu.');
+      }
+    } catch (error) {
+      if (errorCallBack != null) {
+        errorCallBack(error.toString());
+      }
+      return {'totalCount': 0, 'toDoElements': []};
+    }
+  }
 
 }

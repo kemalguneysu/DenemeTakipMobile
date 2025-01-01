@@ -14,8 +14,7 @@ class TodayToDo extends StatefulWidget {
 
 class _TodayToDoState extends State<TodayToDo> {
   ValueNotifier<bool> isLoading = ValueNotifier(false);
-  ValueNotifier<List<ToDoElements>> todayToDo =
-      ValueNotifier<List<ToDoElements>>([]);
+  ValueNotifier<List<ToDoElements>> todayToDo =ValueNotifier<List<ToDoElements>>([]);
   final toDoService = TodoService();
   Map<String, bool> isEditingMap = {};
   Map<String, TextEditingController> textControllers = {};

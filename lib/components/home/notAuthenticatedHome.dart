@@ -123,9 +123,7 @@ class _NotAuthenticatedHomeState extends State<NotAuthenticatedHome> {
 
   @override
   Widget build(BuildContext context) {
-    if (_isLoading) {
-      return const Center(child: CircularProgressIndicator(size: 48,));
-    }
+    
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -155,6 +153,12 @@ class _NotAuthenticatedHomeState extends State<NotAuthenticatedHome> {
               ],
             ),
           ),
+          _isLoading?Container(
+            margin: EdgeInsets.only(top: 24),
+            child: Center(
+                      child: CircularProgressIndicator(
+                  size: 48,
+                ))) :
           SizedBox(
             height: 500,
             child: Carousel(
