@@ -1,5 +1,5 @@
-import 'package:mobil_denemetakip/components/denemelerim/ayt-create.dart';
-import 'package:mobil_denemetakip/components/denemelerim/tyt-create.dart';
+import 'package:mobil_denemetakip/components/denemelerim/ayt/ayt-create.dart';
+import 'package:mobil_denemetakip/components/denemelerim/tyt/tyt-create.dart';
 import 'package:mobil_denemetakip/services/dersler-service.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 

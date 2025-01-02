@@ -383,13 +383,7 @@ class _KonuTakipState extends State<KonuTakip> {
                                                                               ),
                                                                               Row(
                                                                                 children: [
-                                                                                  GestureDetector(
-                                                                                    onTap: () {
-                                                                                      setState(() {
-                                                                                        _updateUserKonu(konu.id);
-                                                                                      });
-                                                                                    },
-                                                                                    child: Row(
+                                                                                  Row(
                                                                                       children: [
                                                                                         ValueListenableBuilder<List<ListUserKonular>>(
                                                                                           valueListenable: userKonularNotifier,
@@ -407,7 +401,6 @@ class _KonuTakipState extends State<KonuTakip> {
                                                                                         ),
                                                                                       ],
                                                                                     ),
-                                                                                  ),
                                                                                 ],
                                                                               ),
                                                                             ],

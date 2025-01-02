@@ -561,6 +561,24 @@ class TytSingleList {
       denemeDate: DateTime.parse(json['denemeDate']),
     );
   }
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'turkceDogru': turkceDogru,
+      'turkceYanlis': turkceYanlis,
+      'matematikDogru': matematikDogru,
+      'matematikYanlis': matematikYanlis,
+      'fenDogru': fenDogru,
+      'fenYanlis': fenYanlis,
+      'sosyalDogru': sosyalDogru,
+      'sosyalYanlis': sosyalYanlis,
+      'yanlisKonularAdDers':
+          yanlisKonularAdDers.map((item) => item.toJson()).toList(),
+      'bosKonularAdDers':
+          bosKonularAdDers.map((item) => item.toJson()).toList(),
+      'denemeDate': denemeDate.toIso8601String(),
+    };
+  }
 }
 
 class KonularAdDers {
@@ -583,6 +601,14 @@ class KonularAdDers {
       dersAdi: json['dersAdi'],
       dersId: json['dersId'],
     );
+  }
+   Map<String, dynamic> toJson() {
+    return {
+      'konuAdi': konuAdi,
+      'dersAdi': dersAdi,
+      'dersId': dersId,
+      'konuId': konuId,
+    };
   }
 }
 
@@ -683,6 +709,39 @@ class AytSingleList {
           .toList(),
     );
   }
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'denemeDate': denemeDate.toIso8601String(),
+      'matematikDogru': matematikDogru,
+      'matematikYanlis': matematikYanlis,
+      'fizikDogru': fizikDogru,
+      'fizikYanlis': fizikYanlis,
+      'kimyaDogru': kimyaDogru,
+      'kimyaYanlis': kimyaYanlis,
+      'biyolojiDogru': biyolojiDogru,
+      'biyolojiYanlis': biyolojiYanlis,
+      'edebiyatDogru': edebiyatDogru,
+      'edebiyatYanlis': edebiyatYanlis,
+      'tarih1Dogru': tarih1Dogru,
+      'tarih1Yanlis': tarih1Yanlis,
+      'tarih2Dogru': tarih2Dogru,
+      'tarih2Yanlis': tarih2Yanlis,
+      'cografya1Dogru': cografya1Dogru,
+      'cografya1Yanlis': cografya1Yanlis,
+      'cografya2Dogru': cografya2Dogru,
+      'cografya2Yanlis': cografya2Yanlis,
+      'felsefeDogru': felsefeDogru,
+      'felsefeYanlis': felsefeYanlis,
+      'dinDogru': dinDogru,
+      'dinYanlis': dinYanlis,
+      'dilDogru': dilDogru,
+      'dilYanlis': dilYanlis,
+      'yanlisKonularAdDers':
+          yanlisKonularAdDers.map((e) => e.toJson()).toList(),
+      'bosKonularAdDers': bosKonularAdDers.map((e) => e.toJson()).toList(),
+    };
+  }
 }
 
 class UpdateTyt {
@@ -729,6 +788,23 @@ class UpdateTyt {
       yanlisKonular: List<String>.from(json['yanlisKonular']),
       bosKonular: List<String>.from(json['bosKonular']),
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'tytId': tytId,
+      'denemeDate': denemeDate.toIso8601String(),
+      'matematikDogru': matematikDogru,
+      'matematikYanlis': matematikYanlis,
+      'turkceDogru': turkceDogru,
+      'turkceYanlis': turkceYanlis,
+      'fenDogru': fenDogru,
+      'fenYanlis': fenYanlis,
+      'sosyalDogru': sosyalDogru,
+      'sosyalYanlis': sosyalYanlis,
+      'yanlisKonular': yanlisKonular,
+      'bosKonular': bosKonular,
+    };
   }
 }
 
@@ -825,7 +901,41 @@ class UpdateAyt {
       bosKonular: List<String>.from(json['bosKonular']),
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'denemeDate': denemeDate.toIso8601String(),
+      'aytId': aytId,
+      'matematikDogru': matematikDogru,
+      'matematikYanlis': matematikYanlis,
+      'fizikDogru': fizikDogru,
+      'fizikYanlis': fizikYanlis,
+      'kimyaDogru': kimyaDogru,
+      'kimyaYanlis': kimyaYanlis,
+      'biyolojiDogru': biyolojiDogru,
+      'biyolojiYanlis': biyolojiYanlis,
+      'edebiyatDogru': edebiyatDogru,
+      'edebiyatYanlis': edebiyatYanlis,
+      'tarih1Dogru': tarih1Dogru,
+      'tarih1Yanlis': tarih1Yanlis,
+      'cografya1Dogru': cografya1Dogru,
+      'cografya1Yanlis': cografya1Yanlis,
+      'tarih2Dogru': tarih2Dogru,
+      'tarih2Yanlis': tarih2Yanlis,
+      'cografya2Dogru': cografya2Dogru,
+      'cografya2Yanlis': cografya2Yanlis,
+      'felsefeDogru': felsefeDogru,
+      'felsefeYanlis': felsefeYanlis,
+      'dinDogru': dinDogru,
+      'dinYanlis': dinYanlis,
+      'dilDogru': dilDogru,
+      'dilYanlis': dilYanlis,
+      'yanlisKonular': yanlisKonular,
+      'bosKonular': bosKonular,
+    };
+  }
 }
+
 
 class OrderByDirection {
   late String orderBy;

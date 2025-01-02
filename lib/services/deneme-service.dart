@@ -206,8 +206,74 @@ class DenemeService {
     }
     return null;
   }
+   Future<TytSingleList> getTytById(String id) async {
+    final url = '$apiBaseUrl/Tyts/GetTytById?TytId=$id';
+    try {
+      final response = await fetchWithAuth.fetchWithAuth(
+        url,
+        headers: {'Content-Type': 'application/json'},
+      );
 
-}
+        return TytSingleList.fromJson(json.decode(response.body));
+    } catch (e) {
+      throw Exception("TYT denemesi bulunamadı.");
+    }
+  }
+
+  Future<AytSingleList> getAytById(String id) async {
+    final url = '$apiBaseUrl/Ayts/GetAytById?AytId=$id';
+    try {
+      final response = await fetchWithAuth.fetchWithAuth(
+        url,
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        return AytSingleList.fromJson(json.decode(response.body));
+      } else {
+        throw Exception("AYT denemesi bulunamadı.");
+      }
+    } catch (e) {
+      throw Exception("AYT denemesi bulunamadı.");
+    }
+  }
+  Future<void> updateTyt(
+    UpdateTyt tytDeneme, {
+    Function? successCallback,
+    Function(String errorMessage)? errorCallback,
+  }) async {
+
+    try {
+      final response = await fetchWithAuth.fetchWithAuth(
+        '$apiBaseUrl/Tyts/updateTyt',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: tytDeneme.toJson(), 
+      );
+
+      if (response.statusCode == 200) {
+        if (successCallback != null) {
+          successCallback();
+        }
+      } else {
+        final errorBody = jsonDecode(response.body);
+        final errorMessages = errorBody is List
+            ? errorBody
+                .map((e) =>
+                    e['value'] is List ? e['value'].join('\n') : e['value'])
+                .join('\n')
+            : 'TYT denemesi eklenirken bir hata oluştu: ${response.reasonPhrase}';
+        throw errorMessages;
+      }
+    } catch (error) {
+      if (errorCallback != null) {
+        errorCallback(error.toString());
+      }
+    }
+  }
 
   
 
+}
