@@ -273,6 +273,41 @@ class DenemeService {
       }
     }
   }
+  Future<void> updateAyt(
+    UpdateAyt aytDeneme, {
+    Function? successCallback,
+    Function(String errorMessage)? errorCallback,
+  }) async {
+    try {
+      final response = await fetchWithAuth.fetchWithAuth(
+        '$apiBaseUrl/Ayts/updateAyt',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: aytDeneme.toJson(),
+      );
+
+      if (response.statusCode == 200) {
+        if (successCallback != null) {
+          successCallback();
+        }
+      } else {
+        final errorBody = jsonDecode(response.body);
+        final errorMessages = errorBody is List
+            ? errorBody
+                .map((e) =>
+                    e['value'] is List ? e['value'].join('\n') : e['value'])
+                .join('\n')
+            : 'AYT denemesi eklenirken bir hata oluştu: ${response.reasonPhrase}';
+        throw errorMessages;
+      }
+    } catch (error) {
+      if (errorCallback != null) {
+        errorCallback(error.toString());
+      }
+    }
+  }
 
   
 

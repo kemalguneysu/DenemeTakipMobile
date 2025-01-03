@@ -4,7 +4,6 @@ import 'package:lucide_icons/lucide_icons.dart';
 import 'package:mobil_denemetakip/constants/hubUrls.dart';
 import 'package:mobil_denemetakip/constants/index.dart';
 import 'package:mobil_denemetakip/constants/receiveFunctions.dart';
-import 'package:mobil_denemetakip/constants/spinner.dart';
 import 'package:mobil_denemetakip/constants/toast.dart';
 import 'package:mobil_denemetakip/services/auth-service.dart';
 import 'package:mobil_denemetakip/services/deneme-service.dart';
@@ -14,23 +13,24 @@ import 'package:mobil_denemetakip/services/signalr-service.dart';
 import 'package:mobil_denemetakip/services/use-signalr.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-class SingleTytContent extends StatefulWidget {
-  final String tytId;
-  const SingleTytContent({Key? key, required this.tytId}) : super(key: key);
+class SingleAytContent extends StatefulWidget {
+  final String aytId;
+  const SingleAytContent({Key? key, required this.aytId}) : super(key: key);
 
   @override
-  State<SingleTytContent> createState() => _SingleTytContentState();
+  State<SingleAytContent> createState() => _SingleAytContentState();
 }
 
-class _SingleTytContentState extends State<SingleTytContent> {
-  late String tytId;
+
+class _SingleAytContentState extends State<SingleAytContent> {
+  late String aytId;
   String selectedDersId = "";
   int page = 1;
   int pageSize = 10;
   List<String> bosKonularId = [];
   List<String> yanlisKonularId = [];
 
-  ValueChangeNotifier<TytSingleList?> tytSingleList = ValueChangeNotifier(null);
+  ValueChangeNotifier<AytSingleList?> aytSingleList = ValueChangeNotifier(null);
   DateTime? _denemeDate;
   ValueNotifier<List<ListKonu>> konularNotifier = ValueNotifier([]);
   ValueNotifier<int> totalPage = ValueNotifier(0);
@@ -50,17 +50,32 @@ class _SingleTytContentState extends State<SingleTytContent> {
   SignalRService? signalRService;
   final authService = AuthService();
 
-  Future<void> _fetchTyt() async {
-    var response = await denemeService.getTytById(tytId);
+  final Map<String, int> maxLimits = {
+    "Matematik": 40,
+    "Fizik": 14,
+    "Kimya": 13,
+    "Biyoloji": 13,
+    "Edebiyat": 24,
+    "Tarih1": 10,
+    "Coğrafya1": 6,
+    "Tarih2": 11,
+    "Coğrafya2": 11,
+    "Felsefe": 12,
+    "Din": 6,
+    "Dil": 80,
+  };
+
+  Future<void> _fetchAyt() async {
+    var response = await denemeService.getAytById(aytId);
     setState(() {
-      tytSingleList.value = response;
-      bosKonularId = tytSingleList.value!.bosKonularAdDers
+      aytSingleList.value = response;
+      bosKonularId = aytSingleList.value!.bosKonularAdDers
           .map((bosKonularAd) => bosKonularAd.konuId)
           .toList();
-      yanlisKonularId = tytSingleList.value!.yanlisKonularAdDers
+      yanlisKonularId = aytSingleList.value!.yanlisKonularAdDers
           .map((yanlisKonularAd) => yanlisKonularAd.konuId)
           .toList();
-      _denemeDate = tytSingleList.value!.denemeDate;
+      _denemeDate = aytSingleList.value!.denemeDate;
     });
   }
 
@@ -76,36 +91,74 @@ class _SingleTytContentState extends State<SingleTytContent> {
   }
 
   int getDogruValue(String dersAdi) {
-    final data = tytSingleList.value;
+    final data = aytSingleList.value;
     if (data == null) return 0;
 
     switch (dersAdi) {
-      case "Türkçe":
-        return data.turkceDogru;
       case "Matematik":
         return data.matematikDogru;
-      case "Fen":
-        return data.fenDogru;
-      case "Sosyal":
-        return data.sosyalDogru;
+      case "Fizik":
+        return data.fizikDogru;
+      case "Biyoloji":
+        return data.biyolojiDogru;
+      case "Kimya":
+        return data.kimyaDogru;
+
+      case "Edebiyat":
+      return data.edebiyatDogru;
+      case "Tarih1":
+        return data.tarih1Dogru;
+      case "Coğrafya1":
+        return data.cografya1Dogru;
+
+      case "Tarih2":
+        return data.tarih2Dogru;
+      case "Coğrafya2":
+        return data.cografya2Dogru;
+      case "Felsefe":
+        return data.felsefeDogru;  
+      case "Din":
+        return data.dinDogru;
+        
+      case "Dil":
+        return data.dilDogru;
       default:
         return 0;
     }
   }
 
   int getYanlisValue(String dersAdi) {
-    final data = tytSingleList.value;
+    final data = aytSingleList.value;
     if (data == null) return 0;
 
     switch (dersAdi) {
-      case "Türkçe":
-        return data.turkceYanlis;
       case "Matematik":
         return data.matematikYanlis;
-      case "Fen":
-        return data.fenYanlis;
-      case "Sosyal":
-        return data.sosyalYanlis;
+      case "Fizik":
+        return data.fizikYanlis;
+      case "Biyoloji":
+        return data.biyolojiYanlis;
+      case "Kimya":
+        return data.kimyaYanlis;
+
+      case "Edebiyat":
+      return data.edebiyatYanlis;
+      case "Tarih1":
+        return data.tarih1Yanlis;
+      case "Coğrafya1":
+        return data.cografya1Yanlis;
+
+      case "Tarih2":
+        return data.tarih2Yanlis;
+      case "Coğrafya2":
+        return data.cografya2Yanlis;
+      case "Felsefe":
+        return data.felsefeYanlis;  
+      case "Din":
+        return data.dinYanlis;
+
+      case "Dil":
+        return data.dilYanlis;
       default:
         return 0;
     }
@@ -114,7 +167,7 @@ class _SingleTytContentState extends State<SingleTytContent> {
   Future<void> _fetchDersler() async {
     isLoading.value = true;
     try {
-      final data = await derslerService.getAllDers(isTyt: true);
+      final data = await derslerService.getAllDers(isTyt: false);
       setState(() {
         dersler = data['dersler'];
         for (var ders in dersler) {
@@ -134,7 +187,7 @@ class _SingleTytContentState extends State<SingleTytContent> {
     page = 1;
     try {
       final data = await konularService.getAllKonular(
-          isTyt: true,
+          isTyt: false,
           konuOrDersAdi: konuAdi,
           dersIds: [dersId],
           page: page,
@@ -151,7 +204,7 @@ class _SingleTytContentState extends State<SingleTytContent> {
     double currentScrollPosition = _scrollController.position.pixels;
     try {
       final data = await konularService.getAllKonular(
-        isTyt: true,
+        isTyt: false,
         page: currentPage,
         size: pageSize,
         dersIds: [selectedDersId!],
@@ -174,7 +227,7 @@ class _SingleTytContentState extends State<SingleTytContent> {
       isLoadingKonu.value = true;
       try {
         final response = await konularService.getAllKonular(
-          isTyt: true,
+          isTyt: false,
           konuOrDersAdi: value,
           dersIds: [selectedDersId!],
           page: 1,
@@ -188,8 +241,7 @@ class _SingleTytContentState extends State<SingleTytContent> {
       isLoadingKonu.value = false;
     });
   }
-
-  Future<void> updateTyt() async {
+  Future<void> updateAyt() async {
     final now = DateTime.now().toUtc();
     final denemeDate = _denemeDate != null
         ? DateTime(
@@ -208,42 +260,64 @@ class _SingleTytContentState extends State<SingleTytContent> {
             now.minute,
             now.second,
           );
-    final tytUpdate = UpdateTyt(
-      tytId: tytSingleList.value!.id,
+    final aytUpdate = UpdateAyt(
+      aytId: aytSingleList.value!.id,
+
       matematikDogru: int.parse(dogruControllers["Matematik"]?.text ?? '0'),
       matematikYanlis: int.parse(yanlisControllers["Matematik"]?.text ?? '0'),
-      turkceDogru: int.parse(dogruControllers["Türkçe"]?.text ?? '0'),
-      turkceYanlis: int.parse(yanlisControllers["Türkçe"]?.text ?? '0'),
-      fenDogru: int.parse(dogruControllers["Fen"]?.text ?? '0'),
-      fenYanlis: int.parse(yanlisControllers["Fen"]?.text ?? '0'),
-      sosyalDogru: int.parse(dogruControllers["Sosyal"]?.text ?? '0'),
-      sosyalYanlis: int.parse(yanlisControllers["Sosyal"]?.text ?? '0'),
+      fizikDogru: int.parse(dogruControllers["Fizik"]?.text ?? '0'),
+      fizikYanlis: int.parse(yanlisControllers["Fizik"]?.text ?? '0'),
+      kimyaDogru: int.parse(dogruControllers["Kimya"]?.text ?? '0'),
+      kimyaYanlis: int.parse(yanlisControllers["Kimya"]?.text ?? '0'),
+      biyolojiDogru: int.parse(dogruControllers["Biyoloji"]?.text ?? '0'),
+      biyolojiYanlis: int.parse(yanlisControllers["Biyoloji"]?.text ?? '0'),
+
+      edebiyatDogru: int.parse(dogruControllers["Edebiyat"]?.text ?? '0'),
+      edebiyatYanlis: int.parse(yanlisControllers["Edebiyat"]?.text ?? '0'),
+      tarih1Dogru: int.parse(dogruControllers["Tarih1"]?.text ?? '0'),
+      tarih1Yanlis: int.parse(yanlisControllers["Tarih1"]?.text ?? '0'),
+      cografya1Dogru: int.parse(dogruControllers["Coğrafya1"]?.text ?? '0'),
+      cografya1Yanlis: int.parse(yanlisControllers["Coğrafya1"]?.text ?? '0'),
+
+      tarih2Dogru: int.parse(dogruControllers["Tarih2"]?.text ?? '0'),
+      tarih2Yanlis: int.parse(yanlisControllers["Tarih2"]?.text ?? '0'),
+      cografya2Dogru: int.parse(dogruControllers["Coğrafya2"]?.text ?? '0'),
+      cografya2Yanlis: int.parse(yanlisControllers["Coğrafya2"]?.text ?? '0'),
+      felsefeDogru: int.parse(dogruControllers["Felsefe"]?.text ?? '0'),
+      felsefeYanlis: int.parse(yanlisControllers["Felsefe"]?.text ?? '0'),
+      dinDogru: int.parse(dogruControllers["Din"]?.text ?? '0'),
+      dinYanlis: int.parse(yanlisControllers["Din"]?.text ?? '0'),
+
+      dilDogru: int.parse(dogruControllers["Dil"]?.text ?? '0'),
+      dilYanlis: int.parse(yanlisControllers["Dil"]?.text ?? '0'),
+
       yanlisKonular: yanlisKonularId,
       bosKonular: bosKonularId,
       denemeDate: denemeDate,
     );
     isLoading.value = true;
-    await denemeService.updateTyt(tytUpdate, successCallback: (){
-      successToast("Başarılı", "TYT denemesi başarıyla güncellendi.", Navigator.of(context).context);
-    },errorCallback: (error) {
+    await denemeService.updateAyt(aytUpdate, successCallback: () {
+      successToast("Başarılı", "AYT denemesi başarıyla güncellendi.",
+          Navigator.of(context).context);
+    }, errorCallback: (error) {
       errorToast("Hata", "$error", Navigator.of(context).context);
     });
     isLoading.value = false;
   }
-
+  
   @override
   void initState() {
     super.initState();
-    tytId = widget.tytId;
-    _fetchTyt();
+    aytId = widget.aytId;
+    _fetchAyt();
     _fetchDersler();
     _scrollController.addListener(_onScroll);
 
     signalRService = UseSignalR.of(context);
     final userId = authService.userId;
-    signalRService!.on(HubUrls.TytHub.url, ReceiveFunctions.TytUpdatedMessage,
+    signalRService!.on(HubUrls.AytHub.url, ReceiveFunctions.AytUpdatedMessage,
         (message) {
-      _fetchTyt();
+      _fetchAyt();
       final parsedMessage =
           message is List && message.isNotEmpty ? message[0] : message;
       successToast("Başarılı", "$parsedMessage", Navigator.of(context).context);
@@ -258,7 +332,6 @@ class _SingleTytContentState extends State<SingleTytContent> {
     yanlisControllers.forEach((key, controller) => controller.dispose());
     super.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
@@ -270,8 +343,7 @@ class _SingleTytContentState extends State<SingleTytContent> {
               size: 48,
             ),
           );
-        } else {
-          return SingleChildScrollView(
+        } return SingleChildScrollView(
               child: Column(
             children: [
               Container(
@@ -317,23 +389,25 @@ class _SingleTytContentState extends State<SingleTytContent> {
                                     SizedBox(width: 8),
                                     Expanded(
                                       child: ValueListenableBuilder<
-                                          TytSingleList?>(
-                                        valueListenable: tytSingleList,
+                                          AytSingleList?>(
+                                        valueListenable: aytSingleList,
                                         builder: (context, value, child) {
+                                          if (value == null) {
+                                            return Center(child:CircularProgressIndicator(size: 48,)); 
+                                          }
                                           return NumberInput(
-                                              initialValue:getDogruValue(item.dersAdi).toDouble(),
+                                              initialValue: getDogruValue(item.dersAdi).toDouble(),
                                               min: 0,
-                                              max: item.dersAdi == "Türkçe" ||
-                                                      item.dersAdi ==
-                                                          "Matematik"
-                                                  ? 40
-                                                  : 20,
+                                              max: (maxLimits[item.dersAdi] ??
+                                                      0)
+                                                  .toDouble(),
                                               allowDecimals: false,
                                               controller: dogruControllers[
                                                   item.dersAdi]);
                                         },
                                       ),
                                     ),
+                                    
                                   ],
                                 ),
                               ),
@@ -345,20 +419,15 @@ class _SingleTytContentState extends State<SingleTytContent> {
                                     SizedBox(width: 8),
                                     Expanded(
                                       child: ValueListenableBuilder<
-                                          TytSingleList?>(
-                                        valueListenable: tytSingleList,
+                                          AytSingleList?>(
+                                        valueListenable: aytSingleList,
                                         builder: (context, value, child) {
-                                          if (value == null) {
-                                            return Center(child:CircularProgressIndicator(size: 48,)); 
-                                          }
                                           return NumberInput(
-                                              initialValue:  getYanlisValue(item.dersAdi).toDouble(),
+                                              initialValue:getYanlisValue(item.dersAdi).toDouble(),
                                               min: 0,
-                                              max: item.dersAdi == "Türkçe" ||
-                                                      item.dersAdi ==
-                                                          "Matematik"
-                                                  ? 40
-                                                  : 20,
+                                              max:
+                                                  (maxLimits[item.dersAdi] ?? 0)
+                                                      .toDouble(),
                                               allowDecimals: false,
                                               controller: yanlisControllers[
                                                   item.dersAdi]);
@@ -380,6 +449,8 @@ class _SingleTytContentState extends State<SingleTytContent> {
                                   showPopover(
                                     context: context,
                                     alignment: Alignment.topCenter,
+                                    offset: const Offset(0, 8),
+                                    overlayBarrier: OverlayBarrier(),
                                     builder: (context) {
                                       return SurfaceCard(
                                         child: SizedBox(
@@ -523,6 +594,7 @@ class _SingleTytContentState extends State<SingleTytContent> {
                                                                                 ),
                                                                               ],
                                                                             ),
+                                                                            // Boş Checkbox
                                                                             Row(
                                                                               children: [
                                                                                 GestureDetector(
@@ -588,8 +660,9 @@ class _SingleTytContentState extends State<SingleTytContent> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text('Yanlış veya Boş Konu Seç',
-                                            style: TextStyle(fontSize: 14)),
+                                        Text(
+                                          'Yanlış veya Boş Konu Seç',style: TextStyle(fontSize: 14)
+                                        ),
                                         Icon(LucideIcons.chevronsUpDown),
                                       ],
                                     ))),
@@ -609,7 +682,8 @@ class _SingleTytContentState extends State<SingleTytContent> {
                         builder: (context) {
                           return AlertDialog(
                             title: Text("Güncelleme Onayı"),
-                            content: Text("TYT denemesini güncellemek istediğinize emin misiniz?"),
+                            content: Text(
+                                "AYT denemesini güncellemek istediğinize emin misiniz?"),
                             actions: [
                               OutlineButton(
                                 child: const Text('İptal'),
@@ -620,7 +694,7 @@ class _SingleTytContentState extends State<SingleTytContent> {
                               PrimaryButton(
                                 child: const Text('Güncelle'),
                                 onPressed: () {
-                                  updateTyt();
+                                  updateAyt();
                                   Navigator.pop(context);
                                 },
                               ),
@@ -629,11 +703,9 @@ class _SingleTytContentState extends State<SingleTytContent> {
                         });
                   },
                 ),
-              ),
+              )
             ],
           ));
-        }
-      },
-    );
+  });
   }
 }

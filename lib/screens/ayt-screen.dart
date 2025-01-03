@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobil_denemetakip/components/denemelerim/ayt/singleAyt/singleAyt.dart';
 
 class AytScreen extends StatefulWidget {
   final String aytId;
@@ -21,21 +22,6 @@ class _AytScreenState extends State<AytScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            "Ayt ID: $aytId", // Parametreyi burada kullanıyoruz
-            style: const TextStyle(fontSize: 18),
-          ),
-          const SizedBox(height: 10),
-          const Text(
-            "Ana Sayfa İçeriği",
-            style: TextStyle(fontSize: 18),
-          ),
-        ],
-      ),
-    );
+    return SingleAytContent(aytId: aytId,);
   }
 }
