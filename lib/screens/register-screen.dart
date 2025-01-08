@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:mobil_denemetakip/constants/index.dart';
 import 'package:mobil_denemetakip/constants/toast.dart';
 import 'package:mobil_denemetakip/services/user-service.dart';
@@ -25,6 +26,8 @@ class _KayitOlScreenState extends State<KayitOlScreen> {
   final _passwordControlKey = const FormKey<String>(#passwordControl);
   CheckboxState _policy = CheckboxState.unchecked;
   CheckboxState _emailConfirmation = CheckboxState.unchecked;
+  bool _obscurePassword = true;
+  bool _obscurePassword2 = true;
   final userService=UserService();
   void submitRegister() {
     var user=User(
@@ -90,12 +93,25 @@ class _KayitOlScreenState extends State<KayitOlScreen> {
               ),
             ),
             child: TextField(
-              obscureText: true,
+              obscureText: _obscurePassword,
               style: TextStyle(
                 color: themeData.colorScheme.foreground,
                 fontSize: 14,
               ),
               controller: _passwordController,
+              trailing: IconButton(
+                  icon: Icon(
+                    _obscurePassword
+                        ? LucideIcons.eye
+                        : LucideIcons.eyeOff, // Gizli/ Açık göz ikonları
+                  ),
+                  variance: ButtonVariance.ghost,
+                  onPressed: () {
+                    setState(() {
+                      _obscurePassword = !_obscurePassword;
+                    });
+                  },
+                )
             ),
           ),
           FormField<String>(
@@ -109,12 +125,25 @@ class _KayitOlScreenState extends State<KayitOlScreen> {
               ),
             ),
             child: TextField(
-              obscureText: true,
+              obscureText: _obscurePassword2,
               style: TextStyle(
                 color: themeData.colorScheme.foreground,
                 fontSize: 14,
               ),
               controller: _passwordControlController,
+              trailing: IconButton(
+                  icon: Icon(
+                    _obscurePassword2
+                        ? LucideIcons.eye
+                        : LucideIcons.eyeOff, // Gizli/ Açık göz ikonları
+                  ),
+                  variance: ButtonVariance.ghost,
+                  onPressed: () {
+                    setState(() {
+                      _obscurePassword2 = !_obscurePassword2;
+                    });
+                  },
+                )
             ),
           ),
           SizedBox(height: 10),

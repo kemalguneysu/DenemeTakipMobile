@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:mobil_denemetakip/constants/toast.dart';
 import 'package:mobil_denemetakip/main.dart';
 import 'package:mobil_denemetakip/services/auth-service.dart';
@@ -17,6 +18,7 @@ class _GirisYapScreenState extends State<GirisYapScreen> {
   final TextEditingController _usernameOrEmail = TextEditingController();
   final TextEditingController _password = TextEditingController();
   final authService = AuthService();
+  bool _obscurePassword = true;
   final userAuthService = UserAuthService();
   final _usernameOrEmailKey = const FormKey<String>(#usernameOrEmail);
   final _passwordKey = const FormKey<String>(#password);
@@ -66,16 +68,29 @@ class _GirisYapScreenState extends State<GirisYapScreen> {
                 fontSize: 14,
               ),
             ),
-            child: TextField(
-              obscureText: true,
-              style: TextStyle(
-                color: themeData.colorScheme.foreground,
-                fontSize: 14,
-              ),
-              controller: _password,
-            ),
+            
             validator: LengthValidator(min: 1, message: "Şifre gereklidir."),
             showErrors: const {FormValidationMode.changed},
+            child: TextField(
+                obscureText: _obscurePassword,
+                style: TextStyle(
+                  color: themeData.colorScheme.foreground,
+                  fontSize: 14,
+                ),
+                controller: _password,
+                trailing: IconButton(
+                  icon: Icon(
+                    _obscurePassword
+                        ? LucideIcons.eye
+                        : LucideIcons.eyeOff, // Gizli/ Açık göz ikonları
+                  ),
+                  variance: ButtonVariance.ghost,
+                  onPressed: () {
+                    setState(() {
+                      _obscurePassword = !_obscurePassword;
+                    });
+                  },
+                )),
           ),
           TextButton(
             onPressed: () {
