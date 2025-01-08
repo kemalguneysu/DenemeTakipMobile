@@ -151,7 +151,6 @@ class DenemeService {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        // Success callback çağrısı
         successCallBack?.call();
 
         if (data['tytAnaliz'] != null) {
@@ -219,7 +218,6 @@ class DenemeService {
       throw Exception("TYT denemesi bulunamadı.");
     }
   }
-
   Future<AytSingleList> getAytById(String id) async {
     final url = '$apiBaseUrl/Ayts/GetAytById?AytId=$id';
     try {
@@ -308,7 +306,116 @@ class DenemeService {
       }
     }
   }
+  Future<List<AnalysisResult>> getTytAnalysis({
+    required int denemeSayisi,
+    String? dersAdi,
+  }) async {
+    return _fetchAnalysis(
+      url: '$apiBaseUrl/Tyts/TytNetAnaliz',
+      denemeSayisi: denemeSayisi,
+      dersAdi: dersAdi,
+    );
+  }
+  Future<List<AnalysisResult>> getAytAnalysis({
+    required int denemeSayisi,
+    required String alanTur,
+    String? dersAdi,
+  }) async {
+    return _fetchAnalysis(
+      url: '$apiBaseUrl/Ayts/AytNetAnaliz',
+      denemeSayisi: denemeSayisi,
+      alanTur: alanTur,
+      dersAdi: dersAdi,
+    );
+  }
+  Future<List<AnalysisResult>> _fetchAnalysis({
+    required String url,
+    required int denemeSayisi,
+    String? alanTur,
+    String? dersAdi,
+  }) async {
+    try {
+      final uri = Uri.parse(url).replace(queryParameters: {
+        'DenemeSayisi': denemeSayisi.toString(),
+        if (alanTur != null && alanTur.isNotEmpty) 'AlanTuru': alanTur,
+        if (dersAdi != null && dersAdi.isNotEmpty) 'DersAdi': dersAdi,
+      });
 
-  
+      final response = await fetchWithAuth.fetchWithAuth(
+        uri.toString(),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = json.decode(response.body);
+
+        // Handle single subject analysis for both TYT and AYT
+        if (dersAdi != null && dersAdi.isNotEmpty) {
+          if((data.containsKey('tyts'))){
+            final List<dynamic> items = data['tyts'];
+            return items
+                  .map((item) => BaseAnalysis.fromJson(item))
+                  .toList();
+          }
+          else if(data.containsKey('ayts')){
+            final List<dynamic> items =data['ayts'];
+            return items
+                  .map((item) => BaseAnalysis.fromJson(item))
+                  .toList();
+            // if(alanTur=="sayisal")
+            //   return items
+            //     .map((item) => SayisalAnalysis.fromJson(item))
+            //     .toList();
+            // else if(alanTur=="esitAgirlik")
+            //   return items
+            //       .map((item) => EsitAgirlikAnalysis.fromJson(item))
+            //       .toList();
+            // else if(alanTur=="sozel")
+            //   return items
+            //       .map((item) => SozelAnalysis.fromJson(item))
+            //       .toList();
+            // else if(alanTur=="dil")
+            //   return items
+            //       .map((item) => DilAnalysis.fromJson(item))
+            //       .toList();      
+            // else
+            //   return [];
+            
+          }
+          else 
+            return  [];
+        }
+
+        // Handle comprehensive analysis
+        if (data.containsKey('tyts')) {
+          final List<dynamic> items = data['tyts'];
+          return items.map((item) => TytAnalysis.fromJson(item)).toList();
+        } else if (data.containsKey('ayts')) {
+          final List<dynamic> items = data['ayts'];
+
+          switch (alanTur?.toLowerCase()) {
+            case 'sayisal':
+              return items
+                  .map((item) => SayisalAnalysis.fromJson(item))
+                  .toList();
+            case 'esitagirlik':
+              return items
+                  .map((item) => EsitAgirlikAnalysis.fromJson(item))
+                  .toList();
+            case 'sozel':
+              return items.map((item) => SozelAnalysis.fromJson(item)).toList();
+            case 'dil':
+              return items.map((item) => DilAnalysis.fromJson(item)).toList();
+            default:
+              return [];
+          }
+        }
+      }
+
+      return [];
+    } catch (error) {
+      return [];
+    }
+  }
 
 }

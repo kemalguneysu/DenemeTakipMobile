@@ -1275,7 +1275,144 @@ class DenemeAnaliz {
     };
   }
 }
+abstract class AnalysisResult {
+  String? get id;
+  DateTime get tarih;
+  double get net;
+}
+class BaseAnalysis implements AnalysisResult {
+  @override
+  final String? id;
+  @override
+  final DateTime tarih;
+  @override
+  final double net;
+  final int dogru;
+  final int yanlis;
 
+  BaseAnalysis({
+    this.id,
+    required this.tarih,
+    required this.net,
+    required this.dogru,
+    required this.yanlis,
+  });
+
+  factory BaseAnalysis.fromJson(Map<String, dynamic> json) {
+    return BaseAnalysis(
+      id: json['id'],
+      tarih: DateTime.parse(json['tarih']),
+      net: json['net'].toDouble(),
+      dogru: json['dogru'],
+      yanlis: json['yanlis'],
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'tarih': tarih.toIso8601String(),
+        'net': net,
+        'dogru': dogru,
+        'yanlis': yanlis,
+      };
+}
+
+
+class TytAnalysis implements AnalysisResult {
+  @override
+  final String? id;
+  @override
+  final DateTime tarih;
+  @override
+  final double net;
+  final double matematikNet;
+  final double turkceNet;
+  final double fenNet;
+  final double sosyalNet;
+
+  TytAnalysis({
+    this.id,
+    required this.tarih,
+    required this.net,
+    required this.matematikNet,
+    required this.turkceNet,
+    required this.fenNet,
+    required this.sosyalNet,
+  });
+
+  factory TytAnalysis.fromJson(Map<String, dynamic> json) {
+    return TytAnalysis(
+      id: json['id'],
+      tarih: DateTime.parse(json['tarih']),
+      net: json['net'].toDouble(),
+      matematikNet: json['matematikNet'].toDouble(),
+      turkceNet: json['turkceNet'].toDouble(),
+      fenNet: json['fenNet'].toDouble(),
+      sosyalNet: json['sosyalNet'].toDouble(),
+    );
+  }
+}
+class AytAnalysis implements AnalysisResult {
+  @override
+  final String? id;
+  @override
+  final DateTime tarih;
+  @override
+  late double sayisalNet;
+  late double esitAgirlikNet;
+  late double sozelNet;
+  late double dilNet;
+
+  @override
+  double get net => sayisalNet + esitAgirlikNet + sozelNet + dilNet;
+  AytAnalysis({
+    this.id,
+    required this.tarih,
+    required this.sayisalNet,
+    required this.esitAgirlikNet,
+    required this.sozelNet,
+    required this.dilNet,
+  });
+
+  factory AytAnalysis.fromJson(Map<String, dynamic> json) {
+    return AytAnalysis(
+      id: json['id'],
+      tarih: DateTime.parse(json['tarih']),
+      sayisalNet: json['sayisalNet'].toDouble(),
+      esitAgirlikNet: json['esitAgirlikNet'].toDouble(),
+      sozelNet: json['sozelNet'].toDouble(),
+      dilNet: json['dilNet'].toDouble(),
+    );
+  }
+}
+class SingleSubjectAnalysis implements AnalysisResult {
+  @override
+  final String? id;
+  @override
+  final DateTime tarih;
+  @override
+  final double net;
+  final int dogru;
+  final int yanlis;
+
+  SingleSubjectAnalysis({
+    this.id,
+    required this.tarih,
+    required this.net,
+    required this.dogru,
+    required this.yanlis,
+  });
+
+  factory SingleSubjectAnalysis.fromJson(Map<String, dynamic> json) {
+    return SingleSubjectAnalysis(
+      id: json['id'],
+      tarih: DateTime.parse(json['tarih']),
+      net: (json['net'] ?? 0.0).toDouble(),
+      dogru: json['dogru'] ?? 0,
+      yanlis: json['yanlis'] ?? 0,
+    );
+  }
+}
 class AnalizList {
   late String id;
   late DateTime tarih;
@@ -1311,18 +1448,20 @@ class AnalizList {
     };
   }
 }
+class SayisalAnalysis implements AnalysisResult {
+  @override
+  final String? id;
+  @override
+  final DateTime tarih;
+  @override
+  final double net;
+  final double matematikNet;
+  final double fizikNet;
+  final double kimyaNet;
+  final double biyolojiNet;
 
-class SayisalAnalizList {
-  late String id;
-  late DateTime tarih;
-  late double net;
-  late double matematikNet;
-  late double fizikNet;
-  late double kimyaNet;
-  late double biyolojiNet;
-
-  SayisalAnalizList({
-    required this.id,
+  SayisalAnalysis({
+    this.id,
     required this.tarih,
     required this.net,
     required this.matematikNet,
@@ -1331,42 +1470,33 @@ class SayisalAnalizList {
     required this.biyolojiNet,
   });
 
-  factory SayisalAnalizList.fromJson(Map<String, dynamic> json) {
-    return SayisalAnalizList(
+  factory SayisalAnalysis.fromJson(Map<String, dynamic> json) {
+    return SayisalAnalysis(
       id: json['id'],
       tarih: DateTime.parse(json['tarih']),
-      net: json['net'],
-      matematikNet: json['matematikNet'],
-      fizikNet: json['fizikNet'],
-      kimyaNet: json['kimyaNet'],
-      biyolojiNet: json['biyolojiNet'],
+      net: (json['net'] ?? 0.0).toDouble(),
+      matematikNet: (json['matematikNet'] ?? 0.0).toDouble(),
+      fizikNet: (json['fizikNet'] ?? 0.0).toDouble(),
+      kimyaNet: (json['kimyaNet'] ?? 0.0).toDouble(),
+      biyolojiNet: (json['biyolojiNet'] ?? 0.0).toDouble(),
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'tarih': tarih.toIso8601String(),
-      'net': net,
-      'matematikNet': matematikNet,
-      'fizikNet': fizikNet,
-      'kimyaNet': kimyaNet,
-      'biyolojiNet': biyolojiNet,
-    };
   }
 }
 
-class EsitAgirlikAnalizList {
-  late String id;
-  late DateTime tarih;
-  late double net;
-  late double matematikNet;
-  late double edebiyatNet;
-  late double tarih1Net;
-  late double cografya1Net;
+class EsitAgirlikAnalysis implements AnalysisResult {
+  @override
+  final String? id;
+  @override
+  final DateTime tarih;
+  @override
+  final double net;
+  final double matematikNet;
+  final double edebiyatNet;
+  final double tarih1Net;
+  final double cografya1Net;
 
-  EsitAgirlikAnalizList({
-    required this.id,
+  EsitAgirlikAnalysis({
+    this.id,
     required this.tarih,
     required this.net,
     required this.matematikNet,
@@ -1375,45 +1505,36 @@ class EsitAgirlikAnalizList {
     required this.cografya1Net,
   });
 
-  factory EsitAgirlikAnalizList.fromJson(Map<String, dynamic> json) {
-    return EsitAgirlikAnalizList(
+  factory EsitAgirlikAnalysis.fromJson(Map<String, dynamic> json) {
+    return EsitAgirlikAnalysis(
       id: json['id'],
       tarih: DateTime.parse(json['tarih']),
-      net: json['net'],
-      matematikNet: json['matematikNet'],
-      edebiyatNet: json['edebiyatNet'],
-      tarih1Net: json['tarih1Net'],
-      cografya1Net: json['cografya1Net'],
+      net: (json['net'] ?? 0.0).toDouble(),
+      matematikNet: (json['matematikNet'] ?? 0.0).toDouble(),
+      edebiyatNet: (json['edebiyatNet'] ?? 0.0).toDouble(),
+      tarih1Net: (json['tarih1Net'] ?? 0.0).toDouble(),
+      cografya1Net: (json['cografya1Net'] ?? 0.0).toDouble(),
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'tarih': tarih.toIso8601String(),
-      'net': net,
-      'matematikNet': matematikNet,
-      'edebiyatNet': edebiyatNet,
-      'tarih1Net': tarih1Net,
-      'cografya1Net': cografya1Net,
-    };
   }
 }
 
-class SozelAnalizList {
-  late String id;
-  late DateTime tarih;
-  late double net;
-  late double edebiyatNet;
-  late double tarih1Net;
-  late double cografya1Net;
-  late double tarih2Net;
-  late double cografya2Net;
-  late double felsefeNet;
-  late double dinNet;
+class SozelAnalysis implements AnalysisResult {
+  @override
+  final String? id;
+  @override
+  final DateTime tarih;
+  @override
+  final double net;
+  final double edebiyatNet;
+  final double tarih1Net;
+  final double cografya1Net;
+  final double tarih2Net;
+  final double cografya2Net;
+  final double felsefeNet;
+  final double dinNet;
 
-  SozelAnalizList({
-    required this.id,
+  SozelAnalysis({
+    this.id,
     required this.tarih,
     required this.net,
     required this.edebiyatNet,
@@ -1425,39 +1546,55 @@ class SozelAnalizList {
     required this.dinNet,
   });
 
-  factory SozelAnalizList.fromJson(Map<String, dynamic> json) {
-    return SozelAnalizList(
+  factory SozelAnalysis.fromJson(Map<String, dynamic> json) {
+    return SozelAnalysis(
       id: json['id'],
       tarih: DateTime.parse(json['tarih']),
-      net: json['net'],
-      edebiyatNet: json['edebiyatNet'],
-      tarih1Net: json['tarih1Net'],
-      cografya1Net: json['cografya1Net'],
-      tarih2Net: json['tarih2Net'],
-      cografya2Net: json['cografya2Net'],
-      felsefeNet: json['felsefeNet'],
-      dinNet: json['dinNet'],
+      net: (json['net'] ?? 0.0).toDouble(),
+      edebiyatNet: (json['edebiyatNet'] ?? 0.0).toDouble(),
+      tarih1Net: (json['tarih1Net'] ?? 0.0).toDouble(),
+      cografya1Net: (json['cografya1Net'] ?? 0.0).toDouble(),
+      tarih2Net: (json['tarih2Net'] ?? 0.0).toDouble(),
+      cografya2Net: (json['cografya2Net'] ?? 0.0).toDouble(),
+      felsefeNet: (json['felsefeNet'] ?? 0.0).toDouble(),
+      dinNet: (json['dinNet'] ?? 0.0).toDouble(),
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'tarih': tarih.toIso8601String(),
-      'net': net,
-      'edebiyatNet': edebiyatNet,
-      'tarih1Net': tarih1Net,
-      'cografya1Net': cografya1Net,
-      'tarih2Net': tarih2Net,
-      'cografya2Net': cografya2Net,
-      'felsefeNet': felsefeNet,
-      'dinNet': dinNet,
-    };
   }
 }
 
+class DilAnalysis implements AnalysisResult {
+  @override
+  final String? id;
+  @override
+  final DateTime tarih;
+  @override
+  final double net;
+  final int dogru;
+  final int yanlis;
+
+  DilAnalysis({
+    this.id,
+    required this.tarih,
+    required this.net,
+    required this.dogru,
+    required this.yanlis,
+  });
+
+  factory DilAnalysis.fromJson(Map<String, dynamic> json) {
+    return DilAnalysis(
+      id: json['id'],
+      tarih: DateTime.parse(json['tarih']),
+      net: (json['net'] ?? 0.0).toDouble(),
+      dogru: json['dogru'] ?? 0,
+      yanlis: json['yanlis'] ?? 0,
+    );
+  }
+}
+
+
+
 class TytAnalizList {
-  late String id;
+  late String? id;
   late DateTime tarih;
   late double net;
   late double matematikNet;

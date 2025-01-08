@@ -1,15 +1,16 @@
-import 'package:flutter/material.dart';
+import 'package:mobil_denemetakip/components/analizlerim/analizlerContent.dart';
+import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-class AnalizlerimScreen extends StatelessWidget {
-  const AnalizlerimScreen({Key? key}) : super(key: key);
+class AnalizlerimScreen extends StatefulWidget {
+  const AnalizlerimScreen({super.key});
 
   @override
+  State<AnalizlerimScreen> createState() => _AnalizlerimScreenState();
+}
+
+class _AnalizlerimScreenState extends State<AnalizlerimScreen> {
+  @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        "Ana Sayfa İçeriği",
-        style: TextStyle(fontSize: 18),
-      ),
-    );
+    return AnalizlerContent();
   }
 }

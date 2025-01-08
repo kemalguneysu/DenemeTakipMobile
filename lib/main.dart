@@ -1,3 +1,4 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mobil_denemetakip/core/router.dart';
@@ -18,12 +19,14 @@ Future<void> main() async {
   colorSchemePreferenceGlobal = _getColorScheme(theme);
   // await dotenv.load(fileName: '.env');
   runApp(
-    ChangeNotifierProvider<ThemeProvider>(
-      create: (context) => ThemeProvider()..setTheme(theme ?? 'light'),
-      child: MyApp(
-      themeService: themeService,
-      colorSchemePreference: colorSchemePreferenceGlobal,
-    ),
+    
+      ChangeNotifierProvider<ThemeProvider>(
+        create: (context) => ThemeProvider()..setTheme(theme ?? 'light'),
+        child: MyApp(
+        themeService: themeService,
+        colorSchemePreference: colorSchemePreferenceGlobal,
+      )
+    
     )
     
   );
@@ -90,6 +93,7 @@ class _UygulamaState extends State<Uygulama> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return UseSignalR(child: sh.ShadcnApp.router(
+      debugShowCheckedModeBanner: false,
       title: 'Deneme Takip',
       routerConfig: router,
       theme: sh.ThemeData(

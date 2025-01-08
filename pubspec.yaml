@@ -30,8 +30,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-    
   flutter_secure_storage: ^9.2.2
+  device_preview: ^1.2.0
+  fl_chart: ^0.70.0
   jwt_decoder: ^2.0.1
   google_sign_in: ^6.2.2
   rxdart: ^0.27.2

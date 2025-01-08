@@ -320,6 +320,9 @@ class _SingleTytContentState extends State<SingleTytContent> {
                                           TytSingleList?>(
                                         valueListenable: tytSingleList,
                                         builder: (context, value, child) {
+                                          if (value == null) {
+                                            return Center(child:CircularProgressIndicator(size: 48,)); 
+                                          }
                                           return NumberInput(
                                               initialValue:getDogruValue(item.dersAdi).toDouble(),
                                               min: 0,

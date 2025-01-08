@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ffi';
 
 import 'package:mobil_denemetakip/constants/index.dart';
 import 'package:mobil_denemetakip/constants/spinner.dart';
