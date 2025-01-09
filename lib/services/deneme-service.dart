@@ -126,7 +126,7 @@ class DenemeService {
       return null;
     }
   }
-  Future<List<DenemeAnaliz>?> getTytAnaliz({
+  Future<List<DenemeAnaliz>> getTytAnaliz({
     int denemeSayisi = 5,
     int konuSayisi = 5,
     required String dersId,
@@ -159,13 +159,15 @@ class DenemeService {
         }
       } else {
         errorCallBack?.call('Error: ${response.statusCode}');
+        return [];
       }
     } catch (error) {
       errorCallBack?.call(error.toString());
+      return [];
     }
-    return null;
+    return [];
   }
-  Future<List<DenemeAnaliz>?> getAytAnaliz({
+  Future<List<DenemeAnaliz>> getAytAnaliz({
     int denemeSayisi = 5,
     int konuSayisi = 5,
     required String dersId,
@@ -199,11 +201,13 @@ class DenemeService {
         }
       } else {
         errorCallBack?.call('Error: ${response.statusCode}');
+        return [];
       }
     } catch (error) {
       errorCallBack?.call(error.toString());
+      return [];
     }
-    return null;
+    return [];
   }
    Future<TytSingleList> getTytById(String id) async {
     final url = '$apiBaseUrl/Tyts/GetTytById?TytId=$id';
@@ -306,7 +310,7 @@ class DenemeService {
       }
     }
   }
-  Future<List<AnalysisResult>> getTytAnalysis({
+  Future<List<AnalysisResult>> getNetTytAnalysis({
     required int denemeSayisi,
     String? dersAdi,
   }) async {
@@ -316,7 +320,7 @@ class DenemeService {
       dersAdi: dersAdi,
     );
   }
-  Future<List<AnalysisResult>> getAytAnalysis({
+  Future<List<AnalysisResult>> getNetAytAnalysis({
     required int denemeSayisi,
     required String alanTur,
     String? dersAdi,

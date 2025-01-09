@@ -15,34 +15,37 @@ class KayitOlScreen extends StatefulWidget {
 }
 
 class _KayitOlScreenState extends State<KayitOlScreen> {
-
   final TextEditingController _emailController = TextEditingController();
   final _emailKey = const FormKey<String>(#email);
   final TextEditingController _usernameController = TextEditingController();
   final _usernameKey = const FormKey<String>(#username);
   final TextEditingController _passwordController = TextEditingController();
   final _passwordKey = const FormKey<String>(#password);
-  final TextEditingController _passwordControlController = TextEditingController();
+  final TextEditingController _passwordControlController =
+      TextEditingController();
   final _passwordControlKey = const FormKey<String>(#passwordControl);
   CheckboxState _policy = CheckboxState.unchecked;
   CheckboxState _emailConfirmation = CheckboxState.unchecked;
   bool _obscurePassword = true;
   bool _obscurePassword2 = true;
-  final userService=UserService();
+  final userService = UserService();
   void submitRegister() {
-    var user=User(
+    var user = User(
       email: _emailController.text,
       username: _usernameController.text,
       password: _passwordController.text,
       passwordConfirm: _passwordControlController.text,
-      getEmailConfirmation: _emailConfirmation==CheckboxState.checked,
+      getEmailConfirmation: _emailConfirmation == CheckboxState.checked,
     );
-    userService.createUser(user.toJson(),Navigator.of(context).context, callBackFunction: () {
-      successToast("Kayıt Başarılı", "Kullanıcı Başarıyla Oluşturuldu",context);
-        context.go("/giris-yap");
+    userService.createUser(user.toJson(), Navigator.of(context).context,
+        callBackFunction: () {
+      successToast(
+          "Kayıt Başarılı", "Kullanıcı Başarıyla Oluşturuldu", context);
+      context.go("/giris-yap");
     });
   }
- @override
+
+  @override
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
     return Container(
@@ -93,13 +96,13 @@ class _KayitOlScreenState extends State<KayitOlScreen> {
               ),
             ),
             child: TextField(
-              obscureText: _obscurePassword,
-              style: TextStyle(
-                color: themeData.colorScheme.foreground,
-                fontSize: 14,
-              ),
-              controller: _passwordController,
-              trailing: IconButton(
+                obscureText: _obscurePassword,
+                style: TextStyle(
+                  color: themeData.colorScheme.foreground,
+                  fontSize: 14,
+                ),
+                controller: _passwordController,
+                trailing: IconButton(
                   icon: Icon(
                     _obscurePassword
                         ? LucideIcons.eye
@@ -111,8 +114,7 @@ class _KayitOlScreenState extends State<KayitOlScreen> {
                       _obscurePassword = !_obscurePassword;
                     });
                   },
-                )
-            ),
+                )),
           ),
           FormField<String>(
             padding: const EdgeInsets.only(top: 12.0),
@@ -125,13 +127,13 @@ class _KayitOlScreenState extends State<KayitOlScreen> {
               ),
             ),
             child: TextField(
-              obscureText: _obscurePassword2,
-              style: TextStyle(
-                color: themeData.colorScheme.foreground,
-                fontSize: 14,
-              ),
-              controller: _passwordControlController,
-              trailing: IconButton(
+                obscureText: _obscurePassword2,
+                style: TextStyle(
+                  color: themeData.colorScheme.foreground,
+                  fontSize: 14,
+                ),
+                controller: _passwordControlController,
+                trailing: IconButton(
                   icon: Icon(
                     _obscurePassword2
                         ? LucideIcons.eye
@@ -143,12 +145,11 @@ class _KayitOlScreenState extends State<KayitOlScreen> {
                       _obscurePassword2 = !_obscurePassword2;
                     });
                   },
-                )
-            ),
+                )),
           ),
           SizedBox(height: 10),
           Row(
-            crossAxisAlignment:CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Checkbox(
                 state: _policy,
@@ -161,7 +162,9 @@ class _KayitOlScreenState extends State<KayitOlScreen> {
               Expanded(
                 child: RichText(
                   text: TextSpan(
-                    style: TextStyle(color: Theme.of(context).colorScheme.foreground, fontSize: 14),
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.foreground,
+                        fontSize: 14),
                     children: [
                       const TextSpan(text: "Gizlilik Politikası'nı "),
                       TextSpan(
@@ -214,7 +217,9 @@ class _KayitOlScreenState extends State<KayitOlScreen> {
               Expanded(
                 child: Text(
                   'Yeni özellikler, kampanyalar ve özel içerikler hakkında bilgilendirilmek için e-posta almak istiyorum.',
-                  style: TextStyle(color: Theme.of(context).colorScheme.foreground, fontSize: 14),
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.foreground,
+                      fontSize: 14),
                 ),
               ),
             ],
@@ -226,7 +231,7 @@ class _KayitOlScreenState extends State<KayitOlScreen> {
               onPressed: () async {
                 submitRegister();
               },
-              child: const Text('Kayıt Ol'),
+              child: const Text('Kayıt Ol',style: TextStyle(fontSize: 14),),
             ),
           ),
           Row(

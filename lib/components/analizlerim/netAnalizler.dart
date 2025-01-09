@@ -14,7 +14,6 @@ class NetAnalizler extends StatefulWidget {
 }
 
 class _NetAnalizlerState extends State<NetAnalizler> {
-  ValueNotifier<int> page = ValueNotifier(1);
   ValueNotifier<int> denemeSayisi = ValueNotifier(5);
   ValueNotifier<int> konuSayisi = ValueNotifier(5);
 
@@ -24,8 +23,7 @@ class _NetAnalizlerState extends State<NetAnalizler> {
   ValueNotifier<String?> dersAdi = ValueNotifier(null);
   ValueNotifier<String> alanTur = ValueNotifier("sayisal");
   ValueNotifier<List<Ders>> dersler = ValueNotifier([]);
-  final ValueNotifier<List<AnalysisResult>> analiz =
-      ValueNotifier<List<AnalysisResult>>([]);
+  final ValueNotifier<List<AnalysisResult>> analiz =ValueNotifier<List<AnalysisResult>>([]);
   final alanlar = ["Sayısal", "Eşit Ağırlık", "Sözel", "Dil"];
 
   final derslerService = DerslerService();
@@ -106,7 +104,7 @@ class _NetAnalizlerState extends State<NetAnalizler> {
         dersler.value = allDersler;
       } else {
         throw Exception(
-            "Dersler listesi bekleniyordu ancak alınan veri farklı.");
+            "Dersler verisi gelirken bir hata ile karşılaşıldı.");
       }
     } catch (error) {
       if (mounted) {
@@ -164,11 +162,11 @@ class _NetAnalizlerState extends State<NetAnalizler> {
 
     try {
       final data = !isAyt.value
-          ? await denemelerService.getTytAnalysis(
+          ? await denemelerService.getNetTytAnalysis(
               denemeSayisi: denemeSayisi.value,
               dersAdi: dersAdiForBackend(dersAdi.value ?? ""),
             )
-          : await denemelerService.getAytAnalysis(
+          : await denemelerService.getNetAytAnalysis(
               denemeSayisi: denemeSayisi.value,
               alanTur: alanTur.value,
               dersAdi: dersAdiForBackend(dersAdi.value ?? ""),
@@ -304,6 +302,20 @@ class _NetAnalizlerState extends State<NetAnalizler> {
   }
 
   @override
+  void dispose() {
+    denemeSayisi.dispose();
+    konuSayisi.dispose();
+    isAyt.dispose();
+    isLoading.dispose();
+    isLoadingForChart.dispose();
+    dersAdi.dispose();
+    alanTur.dispose();
+    dersler.dispose();
+    analiz.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
         child: Column(
@@ -340,7 +352,7 @@ class _NetAnalizlerState extends State<NetAnalizler> {
                                 );
                               },
                             ),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: 6),
                             ValueListenableBuilder(
                               valueListenable: analiz,
                               builder: (context, analizList, child) {
@@ -362,6 +374,8 @@ class _NetAnalizlerState extends State<NetAnalizler> {
                                           child: Column(
                                             children: [
                                               Container(
+                                                padding: EdgeInsets.only(bottom: 12),
+                                                alignment: Alignment.topLeft,
                                                 child: Text(
                                                   "Son ${analizSayisi < denemeSayisiValue ? analizSayisi : denemeSayisiValue} "
                                                   "${isAyt.value ? "AYT denemesi için" : "TYT denemesi için"} $ders net analizi",

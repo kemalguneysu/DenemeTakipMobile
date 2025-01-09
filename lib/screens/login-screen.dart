@@ -68,7 +68,6 @@ class _GirisYapScreenState extends State<GirisYapScreen> {
                 fontSize: 14,
               ),
             ),
-            
             validator: LengthValidator(min: 1, message: "Şifre gereklidir."),
             showErrors: const {FormValidationMode.changed},
             child: TextField(
@@ -111,7 +110,8 @@ class _GirisYapScreenState extends State<GirisYapScreen> {
               onPressed: () async {
                 submitLogin();
               },
-              child: const Text('Giriş Yap'),
+              child: const Text('Giriş Yap',
+              style: TextStyle(fontSize: 14),),
             ),
           ),
           Row(
