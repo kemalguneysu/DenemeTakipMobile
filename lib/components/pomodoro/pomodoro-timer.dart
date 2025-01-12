@@ -1,10 +1,49 @@
+import 'package:flutter/material.dart' hide IconButton;
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:mobil_denemetakip/constants/index.dart';
-import 'package:shadcn_flutter/shadcn_flutter.dart';
+import 'package:shadcn_flutter/shadcn_flutter.dart' as shadcn;
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:just_audio/just_audio.dart';
+import 'dart:convert';
+import 'package:flutter_slidable/flutter_slidable.dart';
+
+class PomodoroSession {
+  final int id;
+  final String oturumAdi;
+  final int oturumSuresi;
+  final int araSuresi;
+  String durum;
+
+  PomodoroSession({
+    required this.id,
+    required this.oturumAdi,
+    required this.oturumSuresi,
+    required this.araSuresi,
+    this.durum = 'waiting',
+  });
+
+  factory PomodoroSession.fromJson(Map<String, dynamic> json) {
+    return PomodoroSession(
+      id: json['id'] as int,
+      oturumAdi: json['oturumAdi'] as String,
+      oturumSuresi: json['oturumSuresi'] as int,
+      araSuresi: json['araSuresi'] as int,
+      durum: json['durum'] as String,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'oturumAdi': oturumAdi,
+      'oturumSuresi': oturumSuresi,
+      'araSuresi': araSuresi,
+      'durum': durum,
+    };
+  }
+}
 
 class PomodoroTimer extends StatefulWidget {
   const PomodoroTimer({super.key});
@@ -37,7 +76,7 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
   ValueNotifier<bool> startBreakAutomatically = ValueNotifier(false);
 
 
-  SliderValue sliderValue = const SliderValue.single(1);
+  shadcn.SliderValue sliderValue = const shadcn.SliderValue.single(1);
   ValueNotifier<int> volumePercentage = ValueNotifier(100);
 
   final CountDownController _countDownController = CountDownController();
@@ -58,10 +97,25 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
   AudioPlayer? _currentPlayer;
   bool isAlarmPlaying = false;
 
+  // Checkbox states for sessions
+  Map<int, shadcn.CheckboxState> checkboxStates = {};
+
   @override
   void initState() {
     super.initState();
     _initializeAudio();
+    _loadSavedSessions();
+    sessions.addListener(_updateCheckboxStates);
+  }
+
+  void _updateCheckboxStates() {
+    setState(() {
+      for (var session in sessions.value) {
+        if (!checkboxStates.containsKey(session.id)) {
+          checkboxStates[session.id] = shadcn.CheckboxState.unchecked;
+        }
+      }
+    });
   }
 
   Future<void> _initializeAudio() async {
@@ -94,15 +148,48 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
       // Kayıtlı ses seviyesini yükle
       final savedLevel = prefs.getDouble('alarmSoundLevel');
       if (savedLevel != null) {
-        sliderValue = SliderValue.single(savedLevel);
+        sliderValue = shadcn.SliderValue.single(savedLevel);
         volumePercentage.value = (savedLevel * 100).toInt();
       } else {
-        sliderValue = const SliderValue.single(1.0);
+        sliderValue = const shadcn.SliderValue.single(1.0);
         await prefs.setDouble('alarmSoundLevel', 1.0);
       }
     } catch (e) {
       print('Audio initialization error: $e');
     }
+  }
+
+  Future<void> _loadSavedSessions() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? savedSessions = prefs.getString('pomodoro_sessions');
+    
+    if (savedSessions != null) {
+      final List<dynamic> decodedSessions = jsonDecode(savedSessions);
+      final List<PomodoroSession> loadedSessions = decodedSessions
+          .map((session) => PomodoroSession.fromJson(session))
+          .toList();
+
+      setState(() {
+        sessions.value = loadedSessions;
+        
+        // Find the first non-played session
+        int firstNonPlayedIndex = loadedSessions.indexWhere((session) => session.durum != "played");
+        if (firstNonPlayedIndex != -1) {
+          currentIndex.value = firstNonPlayedIndex;
+          timer.value = loadedSessions[firstNonPlayedIndex].oturumSuresi;
+        } else {
+          currentIndex.value = 0;
+          timer.value = loadedSessions.isNotEmpty ? loadedSessions[0].oturumSuresi : 0;
+        }
+        updatePercentage();
+      });
+    }
+  }
+
+  Future<void> _saveSessions() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String encodedSessions = jsonEncode(sessions.value.map((s) => s.toJson()).toList());
+    await prefs.setString('pomodoro_sessions', encodedSessions);
   }
 
   Future<String?> _loadSavedAlarmSound() async {
@@ -158,11 +245,15 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
     }
 
     sessions.value = [...sessions.value, newSession];
+    _saveSessions();
     updatePercentage();
     setState(() {});
   }
   void removeSession(int index) {
-    sessions.value.removeAt(index);
+    setState(() {
+      sessions.value.removeAt(index);
+      _saveSessions();
+    });
   }
   void handleHizliOturum() {
     final int sessionMinutes =
@@ -203,6 +294,7 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
       }
 
       sessions.value = newSessions;
+      _saveSessions();
     }
     );
   }
@@ -353,6 +445,7 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
           }
         }
       }
+      _saveSessions();
       setState(() {});
     });
   }
@@ -387,6 +480,7 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
         }
       }
     }
+    _saveSessions();
     setState(() {});
   }
 
@@ -494,7 +588,7 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
   void onSliderChange(double newValue) async {
     // Slider değerini güncelle
     setState(() {
-      sliderValue = SliderValue.single(newValue);
+      sliderValue = shadcn.SliderValue.single(newValue);
       volumePercentage.value = (newValue * 100).toInt();
     });
 
@@ -570,17 +664,17 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        IconButton(
+                        shadcn.IconButton(
                           icon: const Icon(LucideIcons.rotateCcw),
-                          variance: ButtonVariance.ghost,
+                          variance: shadcn.ButtonVariance.ghost,
                           onPressed: handleRestart,
                         ),
                         const SizedBox(width: 16),
-                        IconButton(
+                        shadcn.IconButton(
                           icon: Icon(
                             isRunning.value ? LucideIcons.pause : LucideIcons.play,
                           ),
-                          variance: ButtonVariance.ghost,
+                          variance: shadcn.ButtonVariance.ghost,
                           onPressed: () {
                             if (isRunning.value) {
                               pauseTimer();
@@ -590,8 +684,8 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
                           },
                         ),
                         const SizedBox(width: 16),
-                        IconButton(
-                          variance: ButtonVariance.ghost,
+                        shadcn.IconButton(
+                          variance: shadcn.ButtonVariance.ghost,
                           icon: const Icon(LucideIcons.skipForward),
                           onPressed: handleForward,
                         ),
@@ -603,14 +697,14 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  PrimaryButton(
+                  shadcn.PrimaryButton(
                     onPressed: () {
-                      showPopover(
+                      shadcn.showPopover(
                           context: context,
                           alignment: Alignment.topCenter,
                           builder: (context) {
                             return SizedBox(
-                              height: 300,
+                              height: 700,
                               child: Padding(
                                 padding: const EdgeInsets.all(16.0),
                                 child: Column(
@@ -626,11 +720,11 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
                                               fontSize: 18,
                                               fontWeight: FontWeight.w600),
                                         ),
-                                        IconButton(
-                                          variance: ButtonVariance.ghost,
+                                        shadcn.IconButton(
+                                              variance: shadcn.ButtonVariance.ghost,
                                           icon: Icon(LucideIcons.x),
                                           onPressed: () =>
-                                              closePopover(context),
+                                              shadcn.closePopover(context),
                                         ),
                                       ],
                                     ),
@@ -724,20 +818,19 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
                                           fontWeight: FontWeight.w500),
                                     ),
                                     const SizedBox(height: 8),
-                                    TextField(
+                                    shadcn.TextField(
                                       keyboardType: TextInputType.number,
                                       controller: fastSessionCountController,
                                       textAlign: TextAlign.center,
-                                      initialValue: 1.toString(),
                                     ),
                                     const SizedBox(height: 12),
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
-                                        PrimaryButton(
+                                        shadcn.PrimaryButton(
                                           onPressed: () {
                                             handleHizliOturum();
-                                            closePopover(context);
+                                            shadcn.closePopover(context);
                                           },
                                           child: const Text(
                                             'Oturumları Ekle',
@@ -769,15 +862,15 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
                     ),
                   ),
                   
-                  PrimaryButton(
+                  shadcn.PrimaryButton(
                     onPressed: () {
-                      showPopover(
+                      shadcn.showPopover(
                         context: context,
                         alignment: Alignment.topCenter,
                         builder: (context) {
                           return SizedBox(
                             width: 300,
-                            height: 400,
+                            height: 700,
                             child: Padding(
                               padding: const EdgeInsets.all(16.0),
                               child: Column(
@@ -791,10 +884,10 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
                                         "Pomodoro Ayarları",
                                         style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                                       ),
-                                      IconButton(
-                                        variance: ButtonVariance.ghost,
+                                      shadcn. IconButton(
+                                        variance: shadcn.ButtonVariance.ghost,
                                         icon: Icon(LucideIcons.x),
-                                        onPressed: () => closePopover(context),
+                                        onPressed: () => shadcn.closePopover(context),
                                       ),
                                     ],
                                   ),
@@ -806,7 +899,7 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
                                   const SizedBox(height: 8),
                                   SizedBox(
                                     width: double.infinity,
-                                    child: Select<String>(
+                                    child: shadcn.Select<String>(
                                       itemBuilder: (context, item) => Text(item),
                                       popupConstraints: const BoxConstraints(
                                         maxHeight: 300,
@@ -822,10 +915,10 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
                                               orElse: () => MapEntry('classic-alarm', selectedAlarmSound!))
                                           .key,style: TextStyle(fontSize: 14),),
                                       children: [
-                                        SelectGroup(
-                                          headers: const [SelectLabel(child: Text('Alarm Sesleri'))],
+                                        shadcn.SelectGroup(
+                                          headers: const [shadcn.SelectLabel(child: Text('Alarm Sesleri'))],
                                           children: audioOptions
-                                              .map((audio) => SelectItemButton(
+                                              .map((audio) => shadcn.SelectItemButton(
                                                     value: audio.name,
                                                     child: Text(audio.name,style: TextStyle(fontSize: 14),),
                                                   ))
@@ -843,11 +936,11 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
                                   Row(
                                     children: [
                                       Expanded(
-                                        child: Slider(
+                                        child: shadcn.Slider(
                                           value: sliderValue,
                                           onChanged: (newValue) async {
                                             setState(() {
-                                              sliderValue = newValue;
+                                              sliderValue = shadcn.SliderValue.single(newValue.value);
                                             });
                                             volumePercentage.value = (newValue.value * 100).toInt();
 
@@ -884,7 +977,7 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
                                       ValueListenableBuilder<bool>(
                                         valueListenable: startBreakAutomatically,
                                         builder: (context, value, child) {
-                                          return Switch(
+                                          return shadcn.Switch(
                                             value: value,
                                             onChanged: (newValue) {
                                               startBreakAutomatically.value = newValue;
@@ -902,7 +995,7 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
                                       ValueListenableBuilder<bool>(
                                         valueListenable: startSessionAutomatically,
                                         builder: (context, value, child) {
-                                          return Switch(
+                                          return shadcn.Switch(
                                             value: value,
                                             onChanged: (newValue) {
                                               startSessionAutomatically.value = newValue;
@@ -1010,7 +1103,7 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
                 mainAxisAlignment:
                     MainAxisAlignment.end, // Sağ tarafa yaslamak için
                 children: [
-                  PrimaryButton(
+                  shadcn.PrimaryButton(
                     onPressed: () {
                       addSession();
                     },
@@ -1021,27 +1114,301 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
                   ),
                 ],
               ),
-              Container(
-                  margin: EdgeInsets.only(top: 24),
-                  child: Table(rows: [
-                    TableRow(cells: [
-                      buildHeaderCell("Oturum Adı"),
-                      buildHeaderCell("Süre"),
-                      buildHeaderCell("Ara Süresi"),
-                      buildHeaderCell(
-                        "Durum",
-                      )
-                    ]),
-                    for (var session in sessionList)
-                      TableRow(
-                        cells: [
-                          buildCell(session.oturumAdi),
-                          buildCell(formatTime(session.oturumSuresi)),
-                          buildCell(formatTime(session.araSuresi)),
-                          buildCell(session.durum, false, true, session.durum),
-                        ],
+              
+                Container(
+                  margin: EdgeInsets.only(top: 12),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            shadcn.PrimaryButton(
+                              onPressed: () {
+                                shadcn.showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return shadcn.AlertDialog(
+                                      title: const Text('Silme Onayı'),
+                                      content: const Text(
+                                          'Tüm oturumları silmek istediğinize emin misiniz?'),
+                                      actions: [
+                                        shadcn.OutlineButton(
+                                          child: const Text('İptal'),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                        shadcn.PrimaryButton(
+                                          child: const Text('Sil'),
+                                          onPressed: () {
+                                            setState(() {
+                                              sessions.value = [];
+                                              checkboxStates.clear();
+                                            });
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                              child: Row(
+                                children: [
+                                  Text("Tüm oturumları sil"),
+                                  SizedBox(width: 8),
+                                  Icon(LucideIcons.trash2, size: 16),
+                                ],
+                              ),
+                            ),
+                            shadcn.PrimaryButton(
+                              onPressed: () {
+                                shadcn.showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return shadcn.AlertDialog(
+                                      title: const Text('Silme Onayı'),
+                                      content: const Text(
+                                          'Seçilen oturumları silmek istediğinize emin misiniz?'),
+                                      actions: [
+                                        shadcn.OutlineButton(
+                                          child: const Text('İptal'),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                        shadcn.PrimaryButton(
+                                          child: const Text('Sil'),
+                                          onPressed: () {
+                                            setState(() {
+                                              sessions.value = sessions.value.where((session) => 
+                                                checkboxStates[session.id] != shadcn.CheckboxState.checked
+                                              ).toList();
+                                              checkboxStates.removeWhere((key, value) => 
+                                                value == shadcn.CheckboxState.checked
+                                              );
+                                            });
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                              child: Row(
+                                children: [
+                                  Text("Seçili oturumları sil"),
+                                  SizedBox(width: 8),
+                                  Icon(LucideIcons.trash2, size: 16),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                  ]))
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Column(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(color: shadcn.Theme.of(context).colorScheme.border),
+                                ),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 12),
+                                child: Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 60,
+                                      child: Center(
+                                        child: shadcn.Checkbox(
+                                          state: sessionList.isEmpty 
+                                            ? shadcn.CheckboxState.unchecked
+                                            : sessionList.every((session) => 
+                                                checkboxStates[session.id] == shadcn.CheckboxState.checked)
+                                              ? shadcn.CheckboxState.checked
+                                              : sessionList.any((session) => 
+                                                  checkboxStates[session.id] == shadcn.CheckboxState.checked)
+                                                    ? shadcn.CheckboxState.indeterminate
+                                                    : shadcn.CheckboxState.unchecked,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              for (var session in sessionList) {
+                                                checkboxStates[session.id] = value;
+                                              }
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 2,
+                                      child: Center(
+                                        child: Text(
+                                          'Oturum Adı',
+                                          style: TextStyle(fontWeight: FontWeight.w500),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Center(
+                                        child: Text(
+                                          'Süre',
+                                          style: TextStyle(fontWeight: FontWeight.w500),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Center(
+                                        child: Text(
+                                          'Ara',
+                                          style: TextStyle(fontWeight: FontWeight.w500),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Center(
+                                        child: Text(
+                                          'Durum',
+                                          style: TextStyle(fontWeight: FontWeight.w500),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            // Table Body
+                            ListView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: sessionList.length,
+                              itemBuilder: (context, index) {
+                                final session = sessionList[index];
+                                return Slidable(
+                                  key: Key(session.id.toString()),
+                                  endActionPane: ActionPane(
+                                    motion: const ScrollMotion(),
+                                    children: [
+                                      CustomSlidableAction(
+                                        padding: EdgeInsets.zero,
+                                        backgroundColor: shadcn.Theme.of(context).colorScheme.primary,
+                                        onPressed: (context) {
+                                          // Düzenleme işlemi buraya gelecek
+                                          print("Düzenle tıklandı");
+                                        },
+                                        child: Icon(LucideIcons.pencil, color: shadcn.Theme.of(context).colorScheme.background, size: 20)
+                                      ),
+                                      CustomSlidableAction(
+                                        padding: EdgeInsets.zero,
+                                        backgroundColor: shadcn.Theme.of(context)
+                                          .colorScheme
+                                          .primary,
+                                        onPressed: (context) {
+                                          shadcn.showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return shadcn.AlertDialog(
+                                                title: const Text('Silme Onayı'),
+                                                content: const Text(
+                                                    'Seçilen oturumu silmek istediğinize emin misiniz?'),
+                                                actions: [
+                                                  shadcn.OutlineButton(
+                                                    child: const Text('İptal'),
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                  ),
+                                                  shadcn.PrimaryButton(
+                                                    child: const Text('Sil'),
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        sessions.value = sessions.value.where((s) => s.id != session.id).toList();
+                                                        checkboxStates.remove(session.id);
+                                                      });
+                                                      Navigator.pop(context);
+                                                    },
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        },
+                                        child: Icon(LucideIcons.trash2, color: shadcn.Theme.of(context).colorScheme.background, size: 20),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      border: Border(
+                                        bottom: BorderSide(color: shadcn.Theme.of(context).colorScheme.border),
+                                      ),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(vertical: 12),
+                                      child: Row(
+                                        children: [
+                                          SizedBox(
+                                            width: 60,
+                                            child: Center(
+                                              child: shadcn.Checkbox(
+                                                state: checkboxStates[session.id] ?? shadcn.CheckboxState.unchecked,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    checkboxStates[session.id] = value;
+                                                  });
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 2,
+                                            child: Center(
+                                              child: Text(session.oturumAdi),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Center(
+                                              child: Text(formatTime(session.oturumSuresi)),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Center(
+                                              child: Text(formatTime(session.araSuresi)),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Center(
+                                              child: getIconForState(session.durum) ?? Container(),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Text(
+                          "${sessionList.length} adet veriden ${checkboxStates.values.where((state) => state == shadcn.CheckboxState.checked).length} tanesi seçildi.",
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                )
             ],
           ));
         });

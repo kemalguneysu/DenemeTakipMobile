@@ -16,13 +16,13 @@ class _AuthenticatedHomeState extends State<AuthenticatedHome> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          
-          CountDownTimer(),
-          TytCard(),
-          TytCarousel(),
-          TodayToDo(),
-          AytCard(),
-          AytCarousel()
+          Text("giriş yaptın")
+          // CountDownTimer(),
+          // TytCard(),
+          // TytCarousel(),
+          // TodayToDo(),
+          // AytCard(),
+          // AytCarousel()
         ],
       )
     );
