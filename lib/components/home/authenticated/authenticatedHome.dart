@@ -16,6 +16,7 @@ class _AuthenticatedHomeState extends State<AuthenticatedHome> {
     return SingleChildScrollView(
       child: Column(
         children: [
+          
           CountDownTimer(),
           TytCard(),
           TytCarousel(),

@@ -204,8 +204,8 @@ class _KonuAnalizlerState extends State<KonuAnalizler> {
                                     builder: (context, isAytValue, child) {
                                       return Text(
                                         isAytValue
-                                            ? "AYT Net Analizi"
-                                            : "TYT Net Analizi",
+                                            ? "AYT Konu Analizi"
+                                            : "TYT Konu Analizi",
                                         style: const TextStyle(
                                           fontSize: 24,
                                           fontWeight: FontWeight.bold,

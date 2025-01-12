@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobil_denemetakip/components/pomodoro/pomodoro-content.dart';
 
 class PomodoroScreen extends StatelessWidget {
   const PomodoroScreen({Key? key}) : super(key: key);
@@ -6,10 +7,7 @@ class PomodoroScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: Text(
-        "Ana Sayfa İçeriği",
-        style: TextStyle(fontSize: 18),
-      ),
+      child:PomodoroContent()
     );
   }
 }
