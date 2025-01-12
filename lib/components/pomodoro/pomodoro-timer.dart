@@ -1058,6 +1058,7 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
                           child: TextField(
                             keyboardType: TextInputType.number,
                             controller: sessionMinutesController,
+                            textAlign: TextAlign.center,
                           ),
                         ),
                         const Text(
@@ -1068,6 +1069,7 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
                           child: TextField(
                             keyboardType: TextInputType.number,
                             controller: sessionSecondsController,
+                            textAlign: TextAlign.center,
                           ),
                         ),
                       ],
@@ -1081,6 +1083,7 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
                           child: TextField(
                             keyboardType: TextInputType.number,
                             controller: breakMinutesController,
+                            textAlign: TextAlign.center,
                           ),
                         ),
                         const Text(
@@ -1091,6 +1094,7 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
                           child: TextField(
                             keyboardType: TextInputType.number,
                             controller: breakSecondsController,
+                            textAlign: TextAlign.center,
                           ),
                         ),
                       ],
@@ -1301,10 +1305,144 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
                                         padding: EdgeInsets.zero,
                                         backgroundColor: shadcn.Theme.of(context).colorScheme.primary,
                                         onPressed: (context) {
-                                          // Düzenleme işlemi buraya gelecek
-                                          print("Düzenle tıklandı");
+                                          shadcn.showPopover(
+                                            context: context,
+                                            alignment: Alignment.center,
+                                            builder: (context) {
+                                              final editNameController = TextEditingController(text: session.oturumAdi);
+                                              final editSessionMinutesController = TextEditingController(
+                                                text: (session.oturumSuresi ~/ 60).toString()
+                                              );
+                                              final editSessionSecondsController = TextEditingController(
+                                                text: (session.oturumSuresi % 60).toString()
+                                              );
+                                              final editBreakMinutesController = TextEditingController(
+                                                text: (session.araSuresi ~/ 60).toString()
+                                              );
+                                              final editBreakSecondsController = TextEditingController(
+                                                text: (session.araSuresi % 60).toString()
+                                              );
+
+                                              return SizedBox(
+                                                width: 300,
+                                                height: 700,
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(16.0),
+                                                  child: Column(
+                                                    mainAxisSize: MainAxisSize.min,
+                                                    children: [
+                                                      Row(
+                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                        children: [
+                                                          Text(
+                                                            "Oturumu Düzenle",
+                                                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                                                          ),
+                                                          shadcn.IconButton(
+                                                            variance: shadcn.ButtonVariance.ghost,
+                                                            icon: Icon(LucideIcons.x),
+                                                            onPressed: () => shadcn.closePopover(context),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      SizedBox(height: 16),
+                                                      Text(
+                                                        "Oturum Süresi",
+                                                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                                                      ),
+                                                      SizedBox(height: 8),
+                                                      Row(
+                                                        children: [
+                                                          Flexible(
+                                                            child: TextField(
+                                                              keyboardType: TextInputType.number,
+                                                              controller: editSessionMinutesController,
+                                                              textAlign: TextAlign.center,
+                                                            ),
+                                                          ),
+                                                          Text(':', style: TextStyle(fontSize: 16)),
+                                                          Flexible(
+                                                            child: TextField(
+                                                              keyboardType: TextInputType.number,
+                                                              controller: editSessionSecondsController,
+                                                              textAlign: TextAlign.center,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      SizedBox(height: 16),
+                                                      Text(
+                                                        "Ara Süresi",
+                                                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                                                      ),
+                                                      SizedBox(height: 8),
+                                                      Row(
+                                                        children: [
+                                                          Flexible(
+                                                            child: TextField(
+                                                              keyboardType: TextInputType.number,
+                                                              controller: editBreakMinutesController,
+                                                              textAlign: TextAlign.center,
+                                                            ),
+                                                          ),
+                                                          Text(':', style: TextStyle(fontSize: 16)),
+                                                          Flexible(
+                                                            child: TextField(
+                                                              keyboardType: TextInputType.number,
+                                                              controller: editBreakSecondsController,
+                                                              textAlign: TextAlign.center,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      SizedBox(height: 16),
+                                                      Row(
+                                                        mainAxisAlignment: MainAxisAlignment.end,
+                                                        children: [
+                                                          shadcn.PrimaryButton(
+                                                            onPressed: () {
+                                                              final sessionMinutes = int.tryParse(editSessionMinutesController.text) ?? 0;
+                                                              final sessionSeconds = int.tryParse(editSessionSecondsController.text) ?? 0;
+                                                              final breakMinutes = int.tryParse(editBreakMinutesController.text) ?? 0;
+                                                              final breakSeconds = int.tryParse(editBreakSecondsController.text) ?? 0;
+
+                                                              final totalSessionTime = sessionMinutes * 60 + sessionSeconds;
+                                                              final totalBreakTime = breakMinutes * 60 + breakSeconds;
+
+                                                              setState(() {
+                                                                final updatedSession = PomodoroSession(
+                                                                  id: session.id,
+                                                                  oturumAdi: session.oturumAdi,
+                                                                  oturumSuresi: totalSessionTime,
+                                                                  araSuresi: totalBreakTime,
+                                                                  durum: session.durum,
+                                                                );
+
+                                                                final index = sessions.value.indexWhere((s) => s.id == session.id);
+                                                                if (index != -1) {
+                                                                  sessions.value[index] = updatedSession;
+                                                                  if (currentIndex.value == index) {
+                                                                    timer.value = updatedSession.durum == "break" 
+                                                                      ? totalBreakTime 
+                                                                      : totalSessionTime;
+                                                                  }
+                                                                }
+                                                                _saveSessions();
+                                                              });
+                                                              shadcn.closePopover(context);
+                                                            },
+                                                            child: Text('Oturumu Kaydet',style: TextStyle(fontSize: 14),),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          );
                                         },
-                                        child: Icon(LucideIcons.pencil, color: shadcn.Theme.of(context).colorScheme.background, size: 20)
+                                        child: Icon(LucideIcons.pencil, color: shadcn.Theme.of(context).colorScheme.background, size: 16)
                                       ),
                                       CustomSlidableAction(
                                         padding: EdgeInsets.zero,
@@ -1341,7 +1479,7 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
                                             },
                                           );
                                         },
-                                        child: Icon(LucideIcons.trash2, color: shadcn.Theme.of(context).colorScheme.background, size: 20),
+                                        child: Icon(LucideIcons.trash2, color: shadcn.Theme.of(context).colorScheme.background, size: 16),
                                       ),
                                     ],
                                   ),
